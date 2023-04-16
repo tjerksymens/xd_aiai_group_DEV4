@@ -39,7 +39,7 @@
 
         public function save() {
             $conn = Db::getConnection();
-            $statement = $conn->prepare("INSERT INTO user (email, password) VALUES (:email, :password)");
+            $statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
             $statement->bindValue(":email", $this->email);
             $statement->bindValue(":password", $this->password);
             return $statement->execute();
