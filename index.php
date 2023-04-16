@@ -11,6 +11,7 @@
     <title>AIAI-PROMPT</title>
 </head>
 <body>
+    <?php include_once("nav.inc.php"); ?>
     
 </body>
 </html>
