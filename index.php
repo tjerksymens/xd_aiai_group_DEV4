@@ -12,6 +12,6 @@
 </head>
 <body>
     <?php include_once("nav.inc.php"); ?>
-    
+    <h1>Homepage</h1>
 </body>
 </html>
