@@ -1,21 +1,23 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
-	include_once("functions.inc.php");
 
 
     if(!empty($_POST)){
-		$username = $_POST['email'];
+		$email = $_POST['email'];
 		$password = $_POST['password'];
-
-		if(canLogin($username, $password)) {
-			session_start();
-			$_SESSION['loggedin'] = true;
-			header("Location: index.php");
-
-			header("Location: index.php");
-		}
-		else {
-			$error = true;
+		
+		try{
+			$user = new \PromptPlaza\Framework\User();
+			if($user->canLogin($email, $password)) {
+				session_start();
+				$_SESSION['loggedin'] = true;
+				header("Location: index.php");
+			}
+			else {
+				$error = true;
+			}
+		}catch(Throwable $e){
+			$error = $e->getMessage();
 		}
 	}
 

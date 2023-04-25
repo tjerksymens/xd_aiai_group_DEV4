@@ -3,10 +3,10 @@
 
     if(!empty($_POST)){
         try{
-            $account = new \PromptPlaza\Framework\Account();
-            $account->setEmail($_POST['email']);
-            $account->setPassword($_POST['password']);
-            $account->save();
+            $user = new \PromptPlaza\Framework\User();
+            $user->setEmail($_POST['email']);
+            $user->setPassword($_POST['password']);
+            $user->save();
             header("Location: login.php");
         }
         catch(Throwable $e){

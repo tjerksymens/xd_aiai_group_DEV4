@@ -2,7 +2,7 @@
 
 namespace PromptPlaza\Framework;
 
-class Account
+class User
 {
     private string $email;
     private string $password;
@@ -49,4 +49,24 @@ class Account
         $statement->bindValue(":password", $this->password);
         return $statement->execute();
     }
+
+    public function canLogin($email, $password) {
+        if(empty($email) || empty($password)){
+            throw new \Exception("Email and password are required.");
+        } else {
+            $conn = \PromptPlaza\Framework\Db::getConnection();
+		    $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+            $statement->bindValue(":email", $email);
+            $statement->execute();
+            $user = $statement->fetch(\PDO::FETCH_ASSOC);
+            $hash = $user['password'];
+            
+            if(password_verify($password, $hash)){
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+	}
 }
