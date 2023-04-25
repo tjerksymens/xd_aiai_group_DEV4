@@ -15,7 +15,7 @@ include_once(__DIR__ . "/bootstrap.php");
 
 <body>
     <?php include_once("nav.inc.php"); ?>
-    <h1>Homepage</h1>
+    <h1>Profile</h1>
 </body>
 
 </html>

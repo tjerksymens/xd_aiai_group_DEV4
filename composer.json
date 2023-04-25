@@ -1,0 +1,15 @@
+{
+    "name": "tjaaark/xd_aiai_group_dev4",
+    "autoload": {
+        "psr-4": {
+            "PromptPlaza\\Framework\\": "src/PromptPlaza/Framework"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tjerk Symens",
+            "email": "98127222+tjerksymens@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}

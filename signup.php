@@ -3,7 +3,7 @@
 
     if(!empty($_POST)){
         try{
-            $account = new Account();
+            $account = new \PromptPlaza\Framework\Account();
             $account->setEmail($_POST['email']);
             $account->setPassword($_POST['password']);
             $account->save();

@@ -1,7 +1,7 @@
 <?php
 
     function canLogin($email, $password) {
-		$conn = Db::getConnection();
+		$conn = \PromptPlaza\Framework\Db::getConnection();
 		$statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
 		$statement->bindValue(":email", $email);
 		$statement->execute();
