@@ -1,11 +1,11 @@
 <?php
 include_once(__DIR__ . "/bootstrap.php");
 
-session_start();
+
   if($_SESSION['loggedin'] !== true){
     header("Location: login.php");
   }
-  
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
