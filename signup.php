@@ -5,7 +5,10 @@
         try{
             $user = new \PromptPlaza\Framework\User();
             $user->setEmail($_POST['email']);
+			$user->setFirstname($_POST['firstname']);
+			$user->setLastname($_POST['lastname']);
             $user->setPassword($_POST['password']);
+			$user->setConfirmPassword($_POST['confirmpassword']);
             $user->save();
             header("Location: login.php");
         }
@@ -41,10 +44,21 @@
 					<input type="text" name="email">
 				</div>
 				<div class="form__field">
+					<label for="Firstname">Firstname</label>
+					<input type="text" name="firstname">
+				</div>
+				<div class="form__field">
+					<label for="Lastname">Lastname</label>
+					<input type="text" name="lastname">
+				</div>
+				<div class="form__field">
 					<label for="Password">Password</label>
 					<input type="password" name="password">
 				</div>
-
+				<div class="form__field">
+					<label for="ConfirmPassword">Confrim Password</label>
+					<input type="password" name="confirmpassword">
+				</div>
 				<div class="form__field">
 					<input type="submit" value="Sign Up" class="btn btn--primary">	
 				</div>

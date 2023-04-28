@@ -5,7 +5,11 @@ namespace PromptPlaza\Framework;
 class User
 {
     private string $email;
+    private string $firstname;
+    private string $lastname;
     private string $password;
+    private string $confirmpassword;
+    
 
     public function setEmail($email)
     {
@@ -22,6 +26,35 @@ class User
         return $this->email;
     }
 
+    public function setFirstname($firstname)
+    {
+        if (empty($firstname)) {
+            throw new \Exception("Firstname cannot be empty.");
+        } else {
+            $this->firstname = $firstname;
+            return $this;
+        }
+    }
+
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    public function setLastname($lastname){
+        if (empty($lastname)) {
+            throw new \Exception("Lastname cannot be empty.");
+        } else {
+            $this->lastname = $lastname;
+            return $this;
+        }
+    }
+
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+    
     public function setPassword($password)
     {
         if (strlen($password) < 8) {
@@ -41,12 +74,29 @@ class User
         return $this->password;
     }
 
+    public function setConfirmPassword($confirmpassword)
+    {
+        if (empty($confirmpassword)) {
+            throw new \Exception("passwords do not match.");
+        } else {
+            $this->confirmpassword = $confirmpassword;
+            return $this;
+        }
+    }
+
+    public function getConfirmPassword()
+    {
+        return $this->confirmpassword;
+    }
+
     public function save()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
+        $statement = $conn->prepare("INSERT INTO users (email, password, firstname, lastname) VALUES (:email, :password, :firstname, :lastname)");
         $statement->bindValue(":email", $this->email);
         $statement->bindValue(":password", $this->password);
+        $statement->bindValue(":firstname", $this->firstname);
+        $statement->bindValue(":lastname", $this->lastname);
         return $statement->execute();
     }
 
