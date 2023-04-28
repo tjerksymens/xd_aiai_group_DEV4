@@ -69,4 +69,34 @@ class User
             }
         }
 	}
+
+    public function delete()
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("DELETE FROM users WHERE email = :email");
+        $statement->bindValue(":email", $this->email);
+        return $statement->execute();
+    }
+
+    public static function getId($email){
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT id FROM users WHERE email = :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $result['id'];
+    }
+
+    public static function getById($id)
+    {
+    $conn = Db::getConnection();
+    $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
+    $statement->bindValue(":id", $id);
+    $statement->execute();
+    $result = $statement->fetch(\PDO::FETCH_ASSOC);
+    
+    $user = new User();
+    $user->setEmail($result['email']);
+    return $user;
+    }
 }

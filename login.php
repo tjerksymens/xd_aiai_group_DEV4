@@ -11,6 +11,7 @@
 			if($user->canLogin($email, $password)) {
 				session_start();
 				$_SESSION['loggedin'] = true;
+				$_SESSION['user_id'] = $user->getId($email);
 				header("Location: index.php");
 			}
 			else {

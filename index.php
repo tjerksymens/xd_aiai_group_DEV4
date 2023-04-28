@@ -30,6 +30,7 @@
             <div class="prompt"> 
                 <?php if($_SESSION['loggedin'] !== true): ?>
                     <p><strong><?php echo htmlspecialchars($prompt['email']);?></strong> <?php echo htmlspecialchars(substr($prompt['prompt'], 0, 20)) . '...';?></p>
+                    <a href="login.php">login to see full prompt</a>
                 <?php else: ?>
                     <p><strong><?php echo htmlspecialchars($prompt['email']);?></strong> <?php echo htmlspecialchars($prompt['prompt']);?></p>
                 <?php endif; ?>
