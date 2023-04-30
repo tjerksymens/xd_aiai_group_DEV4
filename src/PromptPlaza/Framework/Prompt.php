@@ -131,4 +131,20 @@ class Prompt
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public static function searchDetails($details)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare(
+            "
+            SELECT prompts.*, users.firstname, users.lastname 
+            FROM prompts 
+            JOIN users ON prompts.user_id = users.id 
+            WHERE prompts.details LIKE :details 
+            ORDER BY prompts.id DESC"
+        );
+        $statement->bindValue(":details", "%$details%");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

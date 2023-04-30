@@ -72,6 +72,11 @@ if (isset($_GET['filter'])) {
     $prompts = \PromptPlaza\Framework\Prompt::getFiltered($_GET['filter']);
 }
 
+//prompt zoeken op details
+if (isset($_GET['details'])) {
+    $prompts = \PromptPlaza\Framework\Prompt::searchDetails($_GET['details']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -146,6 +151,13 @@ if (isset($_GET['filter'])) {
         echo "You selected: " . $selected_value;
     }
     ?>
+
+    <!-- Toont zoeken op details -->
+    <form action="" method="get">
+        <label for="details">Browse by details</label>
+        <input type="text" name="details">
+        <input type="submit" value="Browse" class="btn btn--primary">
+    </form>
 
     <!-- Toont prompts -->
     <div class="prompts">
