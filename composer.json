@@ -11,5 +11,7 @@
             "email": "98127222+tjerksymens@users.noreply.github.com"
         }
     ],
-    "require": {}
+    "require": {
+        "cloudinary/cloudinary_php": "^2.10"
+    }
 }
