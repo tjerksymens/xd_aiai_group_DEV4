@@ -79,9 +79,11 @@ class Prompt
 
 
     //haalt alle prompts op en geeft ze terug
-    public static function getAll($offset = 0){
+    public static function getAll($offset = 0)
+    {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("
+        $statement = $conn->prepare(
+            "
             SELECT prompts.*, users.firstname, users.lastname 
             FROM prompts 
             JOIN users ON prompts.user_id = users.id 
@@ -94,14 +96,16 @@ class Prompt
     }
 
     //telt alle prompts en geeft het aantal terug
-    public static function countAll(){
+    public static function countAll()
+    {
         $conn = Db::getConnection();
         $statement = $conn->prepare("SELECT COUNT(*) FROM prompts");
         $statement->execute();
         return $statement->fetchColumn();
     }
 
-    public function save(){
+    public function save()
+    {
         $conn = Db::getConnection();
         $statement = $conn->prepare("INSERT INTO prompts (prompt, user_id, image, price, details) VALUES (:prompt, :user_id, :image, :price, :details)");
         $statement->bindValue(":prompt", $this->prompt);
@@ -110,5 +114,21 @@ class Prompt
         $statement->bindValue(":price", $this->price);
         $statement->bindValue(":details", $this->details);
         return $statement->execute();
+    }
+
+    public static function getFiltered($filter)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare(
+            "
+            SELECT prompts.*, users.firstname, users.lastname 
+            FROM prompts 
+            JOIN users ON prompts.user_id = users.id 
+            WHERE prompts.price LIKE :filter 
+            ORDER BY prompts.id DESC"
+        );
+        $statement->bindValue(":filter", "%$filter%");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

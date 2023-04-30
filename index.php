@@ -66,6 +66,12 @@ if (!empty($_POST)) {
         $error = "No image selected.";
     }
 }
+
+//prompt filteren
+if (isset($_GET['filter'])) {
+    $prompts = \PromptPlaza\Framework\Prompt::getFiltered($_GET['filter']);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -123,6 +129,23 @@ if (!empty($_POST)) {
         echo "<p>Login to add a prompt</p>";
     endif; ?>
 
+    <!-- Toont filter op prijs -->
+    <form action="" method="get">
+        <label for="filter">Filter on price</label>
+        <select name="filter">
+            <option value="free">Free</option>
+            <option value="1 credit">1 credit</option>
+            <option value="2 credits">2 credits</option>
+        </select>
+        <input type="submit" value="Filter" class="btn btn--primary">
+    </form>
+
+    <?php
+    if (isset($_GET['filter'])) {
+        $selected_value = $_GET['filter'];
+        echo "You selected: " . $selected_value;
+    }
+    ?>
 
     <!-- Toont prompts -->
     <div class="prompts">
