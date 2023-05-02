@@ -9,7 +9,7 @@ class User
     private string $lastname;
     private string $password;
     private string $confirmpassword;
-    
+
 
     public function setEmail($email)
     {
@@ -41,7 +41,8 @@ class User
         return $this->firstname;
     }
 
-    public function setLastname($lastname){
+    public function setLastname($lastname)
+    {
         if (empty($lastname)) {
             throw new \Exception("Lastname cannot be empty.");
         } else {
@@ -54,7 +55,7 @@ class User
     {
         return $this->lastname;
     }
-    
+
     public function setPassword($password)
     {
         if (strlen($password) < 8) {
@@ -76,9 +77,14 @@ class User
 
     public function setConfirmPassword($confirmpassword)
     {
+        //confirm passwo
         if (empty($confirmpassword)) {
-            throw new \Exception("passwords do not match.");
+            throw new \Exception("Confirm password cannot be empty.");
         } else {
+            $options = [
+                'cost' => 12,
+            ];
+            $confirmpassword = password_hash($_POST['password'], PASSWORD_DEFAULT, $options);
             $this->confirmpassword = $confirmpassword;
             return $this;
         }
@@ -88,6 +94,16 @@ class User
     {
         return $this->confirmpassword;
     }
+
+    public function confirmPass($password, $confirmpassword)
+    {
+        if ($password !== $confirmpassword) {
+            throw new \Exception("Passwords do not match.");
+        } else {
+            return true;
+        }
+    }
+
 
     public function save()
     {
@@ -100,25 +116,25 @@ class User
         return $statement->execute();
     }
 
-    public function canLogin($email, $password) {
-        if(empty($email) || empty($password)){
+    public function canLogin($email, $password)
+    {
+        if (empty($email) || empty($password)) {
             throw new \Exception("Email and password are required.");
         } else {
             $conn = \PromptPlaza\Framework\Db::getConnection();
-		    $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+            $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
             $statement->bindValue(":email", $email);
             $statement->execute();
             $user = $statement->fetch(\PDO::FETCH_ASSOC);
             $hash = $user['password'];
-            
-            if(password_verify($password, $hash)){
+
+            if (password_verify($password, $hash)) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
-	}
+    }
 
     public function delete()
     {
@@ -128,7 +144,8 @@ class User
         return $statement->execute();
     }
 
-    public static function getId($email){
+    public static function getId($email)
+    {
         $conn = Db::getConnection();
         $statement = $conn->prepare("SELECT id FROM users WHERE email = :email");
         $statement->bindValue(":email", $email);
@@ -139,14 +156,14 @@ class User
 
     public static function getById($id)
     {
-    $conn = Db::getConnection();
-    $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
-    $statement->bindValue(":id", $id);
-    $statement->execute();
-    $result = $statement->fetch(\PDO::FETCH_ASSOC);
-    
-    $user = new User();
-    $user->setEmail($result['email']);
-    return $user;
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        $user = new User();
+        $user->setEmail($result['email']);
+        return $user;
     }
 }

@@ -81,18 +81,22 @@ class Prompt
     //haalt alle prompts op en geeft ze terug
     public static function getAll($offset = 0)
     {
-        $conn = Db::getConnection();
-        $statement = $conn->prepare(
-            "
-            SELECT prompts.*, users.firstname, users.lastname 
-            FROM prompts 
-            JOIN users ON prompts.user_id = users.id 
-            ORDER BY prompts.id DESC
-            LIMIT 10 OFFSET :offset"
-        );
-        $statement->bindValue(":offset", (int) $offset, \PDO::PARAM_INT);
-        $statement->execute();
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        try {
+            $conn = Db::getConnection();
+            $statement = $conn->prepare(
+                "
+                SELECT prompts.*, users.firstname, users.lastname 
+                FROM prompts 
+                JOIN users ON prompts.user_id = users.id 
+                ORDER BY prompts.id DESC
+                LIMIT 10 OFFSET :offset"
+            );
+            $statement->bindValue(":offset", (int) $offset, \PDO::PARAM_INT);
+            $statement->execute();
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     //telt alle prompts en geeft het aantal terug
