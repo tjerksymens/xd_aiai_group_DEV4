@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "cloudinary/cloudinary_php": "^2.10"
+        "cloudinary/cloudinary_php": "^2.10",
+        "sendgrid/sendgrid": "~7"
     }
 }

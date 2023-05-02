@@ -1,5 +1,6 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
+	$apiKey = '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'; //dees komt nog ergens anders
 
     if(!empty($_POST)){
         try{
@@ -10,9 +11,41 @@
             $user->setPassword($_POST['password']);
 			$user->setConfirmPassword($_POST['confirmpassword']);
             $user->save();
-            header("Location: login.php");
-        }
-        catch(Throwable $e){
+            
+			//send email
+			require 'vendor/autoload.php'; // If you're using Composer (recommended)
+			// Comment out the above line if not using Composer
+			// require("<PATH TO>/sendgrid-php.php");
+			// If not using Composer, uncomment the above line and
+			// download sendgrid-php.zip from the latest release here,
+			// replacing <PATH TO> with the path to the sendgrid-php.php file,
+			// which is included in the download:
+			// https://github.com/sendgrid/sendgrid-php/releases
+			$recipientEmail = $_POST['email'];
+			$nameEmail = $_POST['firstname'] . ' ' . $_POST['lastname'];
+			$firstnameEmail = $_POST['firstname'];
+
+			$email = new \SendGrid\Mail\Mail(); // create new email
+			$email->setFrom("promptplaza@hotmail.com", "Example User"); // set sender
+			$email->setSubject("Welcome to Promptplaza! Verify your email here."); // set subject
+			$email->addTo($_POST['email'] , $nameEmail); // set recipient
+			$email->addContent("text/plain", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong></strong>"); //set title
+			$email->addContent(
+				"text/html", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong></strong>"
+			); //set text
+			$sendgrid = new \SendGrid($apiKey);
+			try { // try to send email
+				$response = $sendgrid->send($email);
+				print $response->statusCode() . "\n";
+				print_r($response->headers());
+				print $response->body() . "\n";
+			} catch (Exception $e) { // if email could not be sent, print error
+				echo 'Caught exception: '. $e->getMessage() ."\n";
+			}
+
+			header("Location: login.php");
+		}
+		catch(Throwable $e){
             $error = $e->getMessage();
         }
     }
@@ -56,7 +89,7 @@
 					<input type="password" name="password">
 				</div>
 				<div class="form__field">
-					<label for="ConfirmPassword">Confrim Password</label>
+					<label for="ConfirmPassword">Confirm Password</label>
 					<input type="password" name="confirmpassword">
 				</div>
 				<div class="form__field">

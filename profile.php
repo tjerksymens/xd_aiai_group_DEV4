@@ -10,6 +10,7 @@ $user = \PromptPlaza\Framework\User::getById($user_id);
 
 if(!empty($_POST)){
     if(isset($_POST['delete_account'])){
+        //ziet er gevaarlijk uit. misschien een popup maken om het account deleten te beschermen
         $user->delete();
         session_destroy();
         header("Location: login.php");
