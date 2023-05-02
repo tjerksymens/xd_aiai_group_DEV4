@@ -26,7 +26,7 @@
 			$firstnameEmail = $_POST['firstname'];
 
 			$email = new \SendGrid\Mail\Mail(); // create new email
-			$email->setFrom("promptplaza@hotmail.com", "Example User"); // set sender
+			$email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
 			$email->setSubject("Welcome to Promptplaza! Verify your email here."); // set subject
 			$email->addTo($_POST['email'] , $nameEmail); // set recipient
 			$email->addContent("text/plain", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong></strong>"); //set title
