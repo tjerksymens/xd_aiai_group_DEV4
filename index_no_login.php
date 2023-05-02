@@ -7,7 +7,7 @@ $prompts = \PromptPlaza\Framework\Prompt::getAll($offset);
 $totalPrompts = \PromptPlaza\Framework\Prompt::countAll();
 $totalPages = ceil($totalPrompts / 10);
 
-if ($_SESSION['loggedin'] === true) {
+if (isset($_SESSION["loggedin"])) {
     header('location: index.php');
 }
 
