@@ -8,11 +8,10 @@ use PromptPlaza\Framework\User;
     if(!empty($_POST)){
 		$validationcode = $_POST['validationcode'];
 		$user_id = $_SESSION['user_id'];
-		
-		$user = \PromptPlaza\Framework\User::getValidationcodeById($user_id);
 
 		try{
-			if(/*password_verify($user['validationcode'], $validationcode)*/ 1 == 1) {
+			$user = new \PromptPlaza\Framework\User();
+			if($user->compareValidationcodeById($user_id, $validationcode)) {
 				$user->validate($user_id); //verandert value van validate van 0 naar 1 waardoor deze gechecked kan worden in de login.php
 				header("Location: login.php");
 			}

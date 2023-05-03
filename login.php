@@ -5,20 +5,25 @@
     if(!empty($_POST)){
 		$email = $_POST['email'];
 		$password = $_POST['password'];
-		
-		try{
-			$user = new \PromptPlaza\Framework\User();
-			if($user->canLogin($email, $password)) {
-				session_start();
-				$_SESSION['loggedin'] = true;
-				$_SESSION['user_id'] = $user->getId($email);
-				header("Location: index.php");
+		$user = new \PromptPlaza\Framework\User();
+		if($user->checkValidated($email)){
+			try{
+				$user = new \PromptPlaza\Framework\User();
+				if($user->canLogin($email, $password)) {
+					session_start();
+					$_SESSION['loggedin'] = true;
+					$_SESSION['user_id'] = $user->getId($email);
+					header("Location: index.php");
+				}
+				else {
+					$error = true;
+				}
+			}catch(Throwable $e){
+				$error = $e->getMessage();
 			}
-			else {
-				$error = true;
-			}
-		}catch(Throwable $e){
-			$error = $e->getMessage();
+		}
+		else{
+			echo "Please validate your account first. Check you're mail for the validation code.";
 		}
 	}
 

@@ -210,17 +210,20 @@ class User
         }
     }
 
-    public static function getValidationcodeById($id)
+    public static function compareValidationcodeById($id, $validationcode)
     {
-        $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT validationcode FROM users WHERE id = :id");
-        $statement->bindValue(":id", $id);
-        $statement->execute();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $conn = \PromptPlaza\Framework\Db::getConnection();
+            $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            $user = $statement->fetch(\PDO::FETCH_ASSOC);
+            $hash = $user['validationcode'];
 
-        $user = new User();
-        $user->setValidationCode($result['validationcode']);
-        return $user;
+            if (password_verify($validationcode, $hash)) {
+                return true;
+            } else {
+                return false;
+            }
     }
 
     public static function Validate($id)
@@ -229,5 +232,23 @@ class User
         $statement = $conn->prepare("UPDATE users SET validated = 1 WHERE id = :id");
         $statement->bindValue(":id", $id);
         return $statement->execute();
+    }
+
+    public static function checkValidated($email)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT validated FROM users WHERE email = :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $valid = $result['validated'];
+
+        if ($valid == 1) {
+            // the user is validated
+            return true;
+        } else {
+            // the user is not validated
+            return false;
+        }
     }
 }

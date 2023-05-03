@@ -7,7 +7,7 @@
         try{
 			$user = new \PromptPlaza\Framework\User();
 			if($user->checkExistingEmail($_POST['email'])){
-				var_dump("email bestaat al");
+				var_dump("This email already exists in the database. Please try again with a different email address.");
 				die;
 			}
 			else {
