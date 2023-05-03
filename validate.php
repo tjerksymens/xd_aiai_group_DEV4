@@ -1,28 +1,24 @@
 <?php
 
-use PromptPlaza\Framework\User;
+include_once(__DIR__ . "/bootstrap.php");
 
-    include_once(__DIR__ . "/bootstrap.php");
+if(!empty($_POST)){
+	$validationcode = $_POST['validationcode'];
+	$user_id = $_SESSION['user_id'];
 
-
-    if(!empty($_POST)){
-		$validationcode = $_POST['validationcode'];
-		$user_id = $_SESSION['user_id'];
-
-		try{
-			$user = new \PromptPlaza\Framework\User();
-			if($user->compareValidationcodeById($user_id, $validationcode)) {
-				$user->validate($user_id); //verandert value van validate van 0 naar 1 waardoor deze gechecked kan worden in de login.php
-				header("Location: login.php");
-			}
-			else {
-				$error = true;
-			}
-		}catch(Throwable $e){
-			$error = $e->getMessage();
+	try{
+		$user = new \PromptPlaza\Framework\User();
+		if($user->compareValidationcodeById($user_id, $validationcode)) {
+			$user->validate($user_id); //verandert value van validate van 0 naar 1 waardoor deze gechecked kan worden in de login.php
+			header("Location: login.php");
 		}
+		else {
+			$error = true;
+		}
+	}catch(Throwable $e){
+		$error = $e->getMessage();
 	}
-
+}
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
