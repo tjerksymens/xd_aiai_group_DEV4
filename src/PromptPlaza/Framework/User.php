@@ -193,6 +193,23 @@ class User
         return $user;
     }
 
+    public static function checkExistingEmail($email)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if (!empty($result)) {
+            // The email already exists in the database
+            return true;
+        } else {
+            // The email does not exist in the database
+            return false;
+        }
+    }
+
     public static function getValidationcodeById($id)
     {
         $conn = Db::getConnection();
