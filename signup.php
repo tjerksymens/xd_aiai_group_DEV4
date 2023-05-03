@@ -1,17 +1,31 @@
 <?php
     include_once(__DIR__ . "/bootstrap.php");
-	$apiKey = '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'; //dees komt nog ergens anders
+	$config = parse_ini_file("config/config.ini");
+	$apiKey = $config['SENDGRID_API_KEY'];
 
     if(!empty($_POST)){
         try{
-            $user = new \PromptPlaza\Framework\User();
+            //maak  random validation code aan en hash deze voor oplsag db (2^12)
+			$options = [
+                'cost' => 12,
+            ];
+			$validation_code = bin2hex(random_bytes(8)); // Generate a 16-character hexadecimal string
+			$validation_code_hash = password_hash($validation_code, PASSWORD_DEFAULT, $options); // Hash the validation code for storage in the database
+	
+			
+			$user = new \PromptPlaza\Framework\User();
             $user->setEmail($_POST['email']);
 			$user->setFirstname($_POST['firstname']);
 			$user->setLastname($_POST['lastname']);
             $user->setPassword($_POST['password']);
 			$user->setConfirmPassword($_POST['confirmpassword']);
+			$user->setValidationCode($validation_code_hash);
+			$user->setValidated(0);
             $user->save();
-            
+
+			//sessie starten voor nieuwe user die wordt gebruikt voor controle bij validation
+			$_SESSION['user_id'] = $user->getId($_POST['email']);
+
 			//send email
 			require 'vendor/autoload.php'; // If you're using Composer (recommended)
 			// Comment out the above line if not using Composer
@@ -29,9 +43,9 @@
 			$email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
 			$email->setSubject("Welcome to Promptplaza! Verify your email here."); // set subject
 			$email->addTo($_POST['email'] , $nameEmail); // set recipient
-			$email->addContent("text/plain", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong></strong>"); //set title
+			$email->addContent("text/plain", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong>"); //set title
 			$email->addContent(
-				"text/html", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong></strong>"
+				"text/html", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong>"
 			); //set text
 			$sendgrid = new \SendGrid($apiKey);
 			try { // try to send email
@@ -43,7 +57,7 @@
 				echo 'Caught exception: '. $e->getMessage() ."\n";
 			}
 
-			header("Location: login.php");
+			header("Location: validate.php");
 		}
 		catch(Throwable $e){
             $error = $e->getMessage();

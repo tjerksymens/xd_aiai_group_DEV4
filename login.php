@@ -59,5 +59,9 @@
 			</form>
 		</div>
 	</div>
+	<div>
+		<p>Don't have an account yet?</p> 
+		<a href="signup.php">Sign up here</a>
+	</div>
 </body>
 </html>
