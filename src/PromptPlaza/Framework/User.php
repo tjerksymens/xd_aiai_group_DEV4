@@ -9,6 +9,8 @@ class User
     private string $lastname;
     private string $password;
     private string $confirmpassword;
+    private string $validationcode;
+    private string $validated;
 
 
     public function setEmail($email)
@@ -95,6 +97,28 @@ class User
         return $this->confirmpassword;
     }
 
+    public function setValidationCode($validationcode)
+    {
+        $this->validationcode = $validationcode;
+        return $this;
+    }
+
+    public function getValidationCode()
+    {
+        return $this->validationcode;
+    }
+
+    public function setValidated($validated)
+    {
+        $this->validated = $validated;
+        return $this;
+    }
+
+    public function getValidated()
+    {
+        return $this->validated;
+    }
+
     public function confirmPass($password, $confirmpassword)
     {
         if ($password !== $confirmpassword) {
@@ -108,11 +132,13 @@ class User
     public function save()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("INSERT INTO users (email, password, firstname, lastname) VALUES (:email, :password, :firstname, :lastname)");
+        $statement = $conn->prepare("INSERT INTO users (email, password, firstname, lastname, validationcode, validated) VALUES (:email, :password, :firstname, :lastname, :validationcode, :validated)");
         $statement->bindValue(":email", $this->email);
         $statement->bindValue(":password", $this->password);
         $statement->bindValue(":firstname", $this->firstname);
         $statement->bindValue(":lastname", $this->lastname);
+        $statement->bindValue(":validationcode", $this->validationcode);
+        $statement->bindValue(":validated", $this->validated);
         return $statement->execute();
     }
 
@@ -165,5 +191,64 @@ class User
         $user = new User();
         $user->setEmail($result['email']);
         return $user;
+    }
+
+    public static function checkExistingEmail($email)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if (!empty($result)) {
+            // The email already exists in the database
+            return true;
+        } else {
+            // The email does not exist in the database
+            return false;
+        }
+    }
+
+    public static function compareValidationcodeById($id, $validationcode)
+    {
+        $conn = \PromptPlaza\Framework\Db::getConnection();
+            $statement = $conn->prepare("SELECT * FROM users WHERE id = :id");
+            $statement->bindValue(":id", $id);
+            $statement->execute();
+            $user = $statement->fetch(\PDO::FETCH_ASSOC);
+            $hash = $user['validationcode'];
+
+            if (password_verify($validationcode, $hash)) {
+                return true;
+            } else {
+                return false;
+            }
+    }
+
+    public static function Validate($id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("UPDATE users SET validated = 1 WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        return $statement->execute();
+    }
+
+    public static function checkValidated($email)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT validated FROM users WHERE email = :email");
+        $statement->bindValue(":email", $email);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        $valid = $result['validated'];
+
+        if ($valid == 1) {
+            // the user is validated
+            return true;
+        } else {
+            // the user is not validated
+            return false;
+        }
     }
 }
