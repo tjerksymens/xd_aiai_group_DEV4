@@ -3,30 +3,31 @@ include_once(__DIR__ . "/bootstrap.php");
 $config = parse_ini_file("config/config.ini");
 $apiKey = $config['SENDGRID_API_KEY'];
 
-if (!empty($_POST)) {
-	try {
-		$user = new \PromptPlaza\Framework\User();
-		if ($user->checkExistingEmail($_POST['email'])) {
-			var_dump("This email already exists in the database. Please try again with a different email address.");
-			die;
-		} else {
-			//maak  random validation code aan en hash deze voor oplsag db (2^12)
-			$options = [
-				'cost' => 12,
-			];
-			$validation_code = bin2hex(random_bytes(8)); // Generate a 16-character hexadecimal string
-			$validation_code_hash = password_hash($validation_code, PASSWORD_DEFAULT, $options); // Hash the validation code for storage in the database
-
-
+    if(!empty($_POST)){
+        try{
 			$user = new \PromptPlaza\Framework\User();
-			$user->setEmail($_POST['email']);
-			$user->setFirstname($_POST['firstname']);
-			$user->setLastname($_POST['lastname']);
-			$user->setPassword($_POST['password']);
-			$user->setConfirmPassword($_POST['confirmpassword']);
-			$user->setValidationCode($validation_code_hash);
-			$user->setValidated(0);
-			$user->save();
+			if($user->checkExistingEmail($_POST['email'])){
+				var_dump("This email already exists in the database. Please try again with a different email address.");
+				die;
+			}
+			else {
+				//maak  random validation code aan en hash deze voor oplsag db (2^12)
+				$options = [
+					'cost' => 12,
+				];
+				$validation_code = bin2hex(random_bytes(8)); // Generate a 16-character hexadecimal string
+				$validation_code_hash = password_hash($validation_code, PASSWORD_DEFAULT, $options); // Hash the validation code for storage in the database
+		
+				
+				$user = new \PromptPlaza\Framework\User();
+				$user->setEmail($_POST['email']);
+				$user->setFirstname($_POST['firstname']);
+				$user->setLastname($_POST['lastname']);
+				$user->setPassword($_POST['password']);
+				$user->setConfirmPassword($_POST['confirmpassword']);
+				$user->setValidationCode($validation_code_hash);
+				$user->setValidated(0);
+				$user->save();
 
 			//sessie starten voor nieuwe user die wordt gebruikt voor controle bij validation
 			$_SESSION['user_id'] = $user->getId($_POST['email']);
