@@ -1,5 +1,6 @@
 <?php
 include_once(__DIR__ . "/bootstrap.php");
+$config = parse_ini_file("config/config.ini");
 
 use Cloudinary\Cloudinary;
 use Cloudinary\Transformation\Resize;
@@ -7,9 +8,9 @@ use Cloudinary\Transformation\Resize;
 $cloudinary = new Cloudinary(
     [
         'cloud' => [
-            'cloud_name' => 'doxzjrtjh',
-            'api_key'    => '436969446252812',
-            'api_secret' => 'JMz0eaR82cExLX0ZgEWmgcn8lb4',
+            'cloud_name' => $config['cloud_name'],
+            'api_key'    => ['api_key'],
+            'api_secret' =>  $config['api_secret'],
         ],
     ]
 );
@@ -29,48 +30,25 @@ if ($_SESSION['loggedin'] !== true) {
 if (!empty($_POST)) {
     //img upload en check
     if (isset($_FILES['image'])) {
-        $img_name = $_FILES['image']['name'];
-        $img_size = $_FILES['image']['size'];
-        $tmp_name = $_FILES['image']['tmp_name'];
-        $img_error = $_FILES['image']['error'];
+        try {
+            $image = new \PromptPlaza\Framework\Image($cloudinary);
+            $newImgName = $image->upload($_FILES['image']);
 
-        if ($img_error === 0) {
-            if ($img_size > 1000000) {
-                $error = "Sorry, your file is too large.";
-            } else {
-                $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
-                $img_ex_lc = strtolower($img_ex);
-
-                $allowed_exs = array("jpg", "jpeg", "png");
-
-                if (in_array($img_ex_lc, $allowed_exs)) {
-                    $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc . $img_ex_lc;
-                    $cloudinary->uploadApi()->upload(
-                        $_FILES['image']['tmp_name'],
-                        ["public_id" => $new_img_name]
-                    );
-                    try {
-                        $prompt = new \PromptPlaza\Framework\Prompt();
-                        $prompt->setPrompt($_POST['prompt']);
-                        $prompt->setImage($new_img_name);
-                        $prompt->setPrice($_POST['price']);
-                        $prompt->setDetails($_POST['details']);
-                        $prompt->setUserId($_SESSION['user_id']);
-                        $prompt->save();
-                    } catch (Throwable $e) {
-                        $error = $e->getMessage();
-                    }
-                } else {
-                    $error = "You can't upload files of this type.";
-                }
-            }
-        } else {
-            $error = "Unknown error occurred.";
+            $prompt = new \PromptPlaza\Framework\Prompt();
+            $prompt->setPrompt($_POST['prompt']);
+            $prompt->setImage($newImgName);
+            $prompt->setPrice($_POST['price']);
+            $prompt->setDetails($_POST['details']);
+            $prompt->setUserId($_SESSION['user_id']);
+            $prompt->save();
+        } catch (Throwable $e) {
+            $error = $e->getMessage();
         }
     } else {
         $error = "No image selected.";
     }
 }
+
 
 //prompt filteren
 if (isset($_GET['filter'])) {
