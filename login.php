@@ -6,24 +6,24 @@
 		$email = $_POST['email'];
 		$password = $_POST['password'];
 		$user = new \PromptPlaza\Framework\User();
-		if($user->checkValidated($email)){
-			try{
+		try{
+			if($user->canLogin($email, $password)){
 				$user = new \PromptPlaza\Framework\User();
-				if($user->canLogin($email, $password)) {
+				if($user->checkValidated($email)) {
 					session_start();
 					$_SESSION['loggedin'] = true;
 					$_SESSION['user_id'] = $user->getId($email);
 					header("Location: index.php");
 				}
 				else {
-					$error = true;
+					$error = "Please validate your account first. Check you're mail for the validation code.";
 				}
-			}catch(Throwable $e){
-				$error = $e->getMessage();
+			}	
+			else{
+				$error = "Sorry, we can't log you in with that email address and password. Can you try again?";
 			}
-		}
-		else{
-			echo "Please validate your account first. Check you're mail for the validation code.";
+		}catch(Throwable $e){
+			$error = $e->getMessage();
 		}
 	}
 
@@ -44,7 +44,7 @@
 				<?php if( isset($error) ):?>
 				<div class="form__error">
 					<p>
-						Sorry, we can't log you in with that email address and password. Can you try again?
+						<?php echo $error; ?>
 					</p>
 				</div>
 				<?php endif; ?>
