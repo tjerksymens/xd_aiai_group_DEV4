@@ -241,9 +241,8 @@ class User
         $statement->bindValue(":email", $email);
         $statement->execute();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        $valid = $result;
 
-        if ($valid === 1) {
+        if ($result === 1) {
             // the user is validated
             return true;
         } else {
