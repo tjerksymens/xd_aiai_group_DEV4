@@ -16,7 +16,7 @@
 					header("Location: index.php");
 				}
 				else {
-					$error = "Please validate your account first. Check you're mail for the validation code.";
+					$error = "Please <a href='validate.php'>validate</a> your account first. Check you're mail for the validation code.";
 				}
 			}	
 			else{
