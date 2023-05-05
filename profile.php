@@ -2,10 +2,6 @@
 include_once(__DIR__ . "/bootstrap.php");
 $config = parse_ini_file("config/config.ini");
 
-if($_SESSION['loggedin'] !== true){
-    header("Location: login.php");
-}
-
 use Cloudinary\Cloudinary;
 use Cloudinary\Transformation\Resize;
 
@@ -23,14 +19,23 @@ $user_id = $_SESSION['user_id'];
 $user = \PromptPlaza\Framework\User::getById($user_id);
 $profile_picture = $user['image'];
 
-if(!empty($_POST)){
-    if(isset($_POST['set_image'])){
+if ($_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+}
+
+if (!empty($_POST)) {
+    if (isset($_POST['set_image'])) {
         if (isset($_FILES['image'])) {
             try {
                 $image = new \PromptPlaza\Framework\Image($cloudinary);
-                $newImgName = $image->upload($_FILES['image']);
-    
+                //functie werkt tot hier maar alle vars kunnen gedumpt worden en zien er ok uit
+                $newImgName = $image->upload($_FILES['image']); //crasht hier en geeft exception van de catch
+
+                $user = new \PromptPlaza\Framework\User();
                 $user->imageSave($newImgName, $user_id);
+
+                $user = \PromptPlaza\Framework\User::getById($user_id);
+                $profile_picture = $user['image'];
             } catch (Throwable $e) {
                 $error = $e->getMessage();
             }
@@ -39,14 +44,14 @@ if(!empty($_POST)){
         }
     }
 
-    if(isset($_POST['delete_account'])){
+    if (isset($_POST['delete_account'])) {
         //ziet er gevaarlijk uit. misschien een popup maken om het account deleten te beschermen
         $user->delete();
         session_destroy();
         header("Location: login.php");
     }
 
-    if(isset($_POST['reset_password'])){
+    if (isset($_POST['reset_password'])) {
         header("Location: reset_password.php");
     }
 }
@@ -65,13 +70,13 @@ if(!empty($_POST)){
 <body>
     <?php include_once("nav.inc.php"); ?>
     <h1>Profile</h1>
-    
+
     <form action="" method="post" enctype="multipart/form-data">
         <?php if (!empty($profile_picture)) : ?>
             <div class="profile_picture">
                 <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
             </div>
-        <?php else: ?>
+        <?php else : ?>
             <div class="profile_picture">
                 <img src="uploads/profile_picture_placeholder.jpg" alt="profile picture" width="300px">
             </div>
@@ -93,7 +98,7 @@ if(!empty($_POST)){
             <input type="submit" value="Upload a profile picture" class="btn btn--primary" name="set_image">
         </div>
     </form>
-    
+
     <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
     <form action="" method="post">
         <button type="submit" name="reset_password">Reset Password</button>
