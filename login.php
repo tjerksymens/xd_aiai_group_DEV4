@@ -65,9 +65,9 @@
 		</div>
 	</div>
 	<div>
-		<a href="signup.php">Sign up here</a>
+		<a href="signup.php">Sign Up Here</a>
 		<br>
-		<a href="forgot_password.php">Change my password</a>
+		<a href="forgot_password.php">Forgot My Password</a>
 	</div>
 </body>
 </html>

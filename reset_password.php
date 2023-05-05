@@ -14,12 +14,16 @@ if (!empty($_POST)) {
 	$confirmpassword = $_POST['confirmpassword'];
 	
 	if ($password == $confirmpassword) {
-		try {
-			$user = new \PromptPlaza\Framework\User();
-            $user->updatePassword($email, $password);
-			$success = "Your password has been reset.";
-		} catch (Throwable $e) {
-			$error = $e->getMessage();
+		$user = new \PromptPlaza\Framework\User();
+		if($user->canLogin($email, $password)) {
+			$error = "You can't use your old password.";
+		} else {
+			try {
+				$user->updatePassword($email, $password);
+				$success = "Your password has been reset.";
+			} catch (Throwable $e) {
+				$error = $e->getMessage();
+			}
 		}
 	} else {
 		$error = "Password and confirm password are not the same.";
