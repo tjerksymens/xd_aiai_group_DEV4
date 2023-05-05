@@ -28,43 +28,35 @@ $apiKey = $config['SENDGRID_API_KEY'];
 				$user->setValidated(0);
 				$user->save();
 
-			//sessie starten voor nieuwe user die wordt gebruikt voor controle bij validation
-			$_SESSION['user_id'] = $user->getId($_POST['email']);
+				//sessie starten voor nieuwe user die wordt gebruikt voor controle bij validation
+				$_SESSION['user_id'] = $user->getId($_POST['email']);
 
-			//send email
-			require 'vendor/autoload.php'; // If you're using Composer (recommended)
-			// Comment out the above line if not using Composer
-			// require("<PATH TO>/sendgrid-php.php");
-			// If not using Composer, uncomment the above line and
-			// download sendgrid-php.zip from the latest release here,
-			// replacing <PATH TO> with the path to the sendgrid-php.php file,
-			// which is included in the download:
-			// https://github.com/sendgrid/sendgrid-php/releases
-			$recipientEmail = $_POST['email'];
-			$nameEmail = $_POST['firstname'] . ' ' . $_POST['lastname'];
-			$firstnameEmail = $_POST['firstname'];
+				//email versturen met validation code
+				$recipientEmail = $_POST['email'];
+				$nameEmail = $_POST['firstname'] . ' ' . $_POST['lastname'];
+				$firstnameEmail = $_POST['firstname'];
 
-			$email = new \SendGrid\Mail\Mail(); // create new email
-			$email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
-			$email->setSubject("Welcome to Promptplaza! Verify your email here."); // set subject
-			$email->addTo($_POST['email'], $nameEmail); // set recipient
-			$email->addContent("text/plain", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong>"); //set title
-			$email->addContent(
-				"text/html",
-				"Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong>"
-			); //set text
-			$sendgrid = new \SendGrid($apiKey);
-			try { // try to send email
-				$response = $sendgrid->send($email);
-				print $response->statusCode() . "\n";
-				print_r($response->headers());
-				print $response->body() . "\n";
-			} catch (Exception $e) { // if email could not be sent, print error
-				echo 'Caught exception: ' . $e->getMessage() . "\n";
+				$email = new \SendGrid\Mail\Mail(); // create new email
+				$email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
+				$email->setSubject("Welcome to Promptplaza! Verify your email here."); // set subject
+				$email->addTo($_POST['email'], $nameEmail); // set recipient
+				$email->addContent("text/plain", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong>"); //set title
+				$email->addContent(
+					"text/html",
+					"Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong>"
+				); //set text
+				$sendgrid = new \SendGrid($apiKey);
+				try { // try to send email
+					$response = $sendgrid->send($email);
+					print $response->statusCode() . "\n";
+					print_r($response->headers());
+					print $response->body() . "\n";
+				} catch (Exception $e) { // if email could not be sent, print error
+					echo 'Caught exception: ' . $e->getMessage() . "\n";
+				}
+
+				header("Location: validate.php");
 			}
-
-			header("Location: validate.php");
-		}
 	} catch (Throwable $e) {
 		$error = $e->getMessage();
 	}

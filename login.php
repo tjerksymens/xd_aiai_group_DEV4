@@ -65,8 +65,9 @@
 		</div>
 	</div>
 	<div>
-		<p>Don't have an account yet?</p> 
 		<a href="signup.php">Sign up here</a>
+		<br>
+		<a href="forgot_password.php">Change my password</a>
 	</div>
 </body>
 </html>

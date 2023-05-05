@@ -129,6 +129,60 @@ class User
         }
     }
 
+    public function updatePassword($email, $password)
+    {
+        if (strlen($password) < 8) {
+            throw new \Exception("Password must be at least 8 characters.");
+        } else {
+            $options = [
+                'cost' => 12,
+            ];
+            $hash = password_hash($password, PASSWORD_DEFAULT, $options);
+            $conn = Db::getConnection();
+            $statement = $conn->prepare("UPDATE users SET password = :password WHERE email = :email");
+            $statement->bindValue(":email", $email);
+            $statement->bindValue(":password", $hash);
+            return $statement->execute();
+        }
+    }
+
+    public function resetPassword($sendEmail)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
+        $statement->bindValue(":email", $sendEmail);
+        $statement->execute();
+        $user = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        $config = parse_ini_file("config/config.ini");
+        $apiKey = $config['SENDGRID_API_KEY'];
+		$nameEmail = $user['firstname'] . ' ' . $user['lastname'];
+		$firstnameEmail = $user['firstname'];
+        //deze werkt alleen als je de juiste link voor jouw localhost hebt naar de reset password pagina, pas deze aaan in de config ZIE README
+        $link =  $config['password_reset_url'];
+
+		$email = new \SendGrid\Mail\Mail(); // create new email
+		$email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
+		$email->setSubject("Reset you're password now!"); // set subject
+		$email->addTo($sendEmail, $nameEmail); // set recipient
+		$email->addContent("text/plain", "Hey $firstnameEmail! Click <a href=\"$link\">here</a> to reset your password.<br> 
+        If you didn't request a password reset, just ignore this email."); //set title
+		$email->addContent(
+            "text/html",
+            "Hey $firstnameEmail! Click <a href=\"$link\">here</a> to reset your password.<br> 
+            If you didn't request a password reset, just ignore this email."
+		); //set text
+		$sendgrid = new \SendGrid($apiKey);
+		try { // try to send email
+			$response = $sendgrid->send($email);
+			print $response->statusCode() . "\n";
+			print_r($response->headers());
+			print $response->body() . "\n";
+		} catch (\Exception $e) { // if email could not be sent, return error
+			$error = 'Caught exception: ' . $e->getMessage() . "\n";
+            return $error;
+		}
+    }
 
     public function save()
     {
@@ -188,10 +242,7 @@ class User
         $statement->bindValue(":id", $id);
         $statement->execute();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
-
-        $user = new User();
-        $user->setEmail($result['email']);
-        return $user;
+        return $result;
     }
 
     public static function checkExistingEmail($email)

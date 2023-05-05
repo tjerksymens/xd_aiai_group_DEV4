@@ -21,7 +21,7 @@ $cloudinary = new Cloudinary(
 
 $user_id = $_SESSION['user_id'];
 $user = \PromptPlaza\Framework\User::getById($user_id);
-$profile_picture = $user->getImage();
+$profile_picture = $user['image'];
 
 if(!empty($_POST)){
     if(isset($_POST['set_image'])){
@@ -45,6 +45,10 @@ if(!empty($_POST)){
         session_destroy();
         header("Location: login.php");
     }
+
+    if(isset($_POST['reset_password'])){
+        header("Location: reset_password.php");
+    }
 }
 
 ?>
@@ -63,7 +67,7 @@ if(!empty($_POST)){
     <h1>Profile</h1>
     
     <form action="" method="post" enctype="multipart/form-data">
-        <?php if (isset($profile_picture)) : ?>
+        <?php if (!empty($profile_picture)) : ?>
             <div class="profile_picture">
                 <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
             </div>
@@ -90,7 +94,10 @@ if(!empty($_POST)){
         </div>
     </form>
     
-    <p><strong>Email:</strong> <?php echo htmlspecialchars($user->getEmail()); ?></p>
+    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+    <form action="" method="post">
+        <button type="submit" name="reset_password">Reset Password</button>
+    </form>
     <form action="" method="post">
         <button type="submit" name="delete_account">Delete Account</button>
     </form>
