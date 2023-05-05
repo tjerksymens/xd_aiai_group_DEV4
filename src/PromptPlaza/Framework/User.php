@@ -11,6 +11,7 @@ class User
     private string $confirmpassword;
     private string $validationcode;
     private string $validated;
+    private string $image;
 
 
     public function setEmail($email)
@@ -250,5 +251,33 @@ class User
             // the user is not validated
             return false;
         }
+    }
+
+    public function getImage()
+    {
+        if (isset($this->image)) {
+            return $this->image;
+        } else {
+            return null;
+        }
+    }
+
+    public function setImage($image)
+    {
+        if (empty($image)) {
+            throw new \Exception("Image cannot be empty.");
+        } else {
+            $this->image = $image;
+            return $this;
+        }
+    }
+
+    public function imageSave($image,$id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("UPDATE users SET image = :image WHERE id = :id");
+        $statement->bindValue(":image", $image);
+        $statement->bindValue(":id", $id);
+        return $statement->execute();
     }
 }
