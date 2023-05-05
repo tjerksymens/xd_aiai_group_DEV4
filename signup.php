@@ -7,8 +7,7 @@ $apiKey = $config['SENDGRID_API_KEY'];
         try{
 			$user = new \PromptPlaza\Framework\User();
 			if($user->checkExistingEmail($_POST['email'])){
-				var_dump("This email already exists in the database. Please try again with a different email address.");
-				die;
+				$error = "This email already exists in the database. Please try again with a different email address.";
 			}
 			else {
 				//maak  random validation code aan en hash deze voor oplsag db (2^12)
@@ -121,6 +120,10 @@ $apiKey = $config['SENDGRID_API_KEY'];
 				</div>
 			</form>
 		</div>
+	</div>
+	<div>
+		<p>Already have an account?</p>
+		<a href="login.php">Log in here</a>
 	</div>
 </body>
 
