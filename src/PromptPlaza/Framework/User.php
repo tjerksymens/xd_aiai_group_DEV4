@@ -242,7 +242,7 @@ class User
         $statement->execute();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        if ($result === 1) {
+        if ($result['validated'] == 1) {
             // the user is validated
             return true;
         } else {
