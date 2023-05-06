@@ -151,6 +151,13 @@ if (isset($_GET['details'])) {
                     people like this
                 </div>
 
+                <!-- Toont add to favourite -->
+                <div>
+                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite" id="favourite<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
+                    <span class="status"></span>
+                </div>
+
+
                 <!-- Toont comments -->
                 <div class="post_comments">
                     <div class="post_comments_form">

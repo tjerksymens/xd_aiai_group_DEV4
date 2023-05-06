@@ -161,4 +161,42 @@ class Prompt
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         return $result['count'];
     }
+
+    //getFavourites
+    public static function getFavourites($userId, $promptId)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM favourites WHERE user_id = :userId AND prompt_id = :promptId");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    //get all favourites
+    public static function getAllFavourites($userId)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("
+        SELECT favourites.*, prompts.*, users.firstname, users.lastname 
+        FROM favourites
+        JOIN prompts ON favourites.prompt_id = prompts.id 
+        JOIN users ON favourites.user_id = users.id 
+        WHERE favourites.user_id = :userId
+        ORDER BY prompts.id DESC");
+        $statement->bindValue(":userId", $userId);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    //check if favourite exists
+    public static function checkFavourite($userId, $promptId)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM favourites WHERE user_id = :userId AND prompt_id = :promptId");
+        $statement->bindValue(":userId", $userId);
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

@@ -50,13 +50,48 @@ for (let i = 0; i < btns.length; i++) {
             .then(response => response.json())
             .then(result => {
                 let newComment = document.createElement('li');
-                newComment.innerHTML = result.body;
+                 newComment.innerHTML = result.body;
                 document
                     .querySelector(".post_comments_list" + id)
                     .appendChild(newComment);
             })
             .catch(error => {
                 console.error('Error:', error, id, text);
+            });
+    });
+}
+
+let favourites = document.querySelectorAll(".favourite");
+for (let i = 0; i < favourites.length; i++) {
+    favourites[i].addEventListener("click", function(e) {
+        e.preventDefault();
+        // get the id of the post
+        let id = this.getAttribute("data-id");
+        let a = document.querySelector("#favourite" + id);
+
+        // fetch (POST) to ajax/lik.php, use formdata
+        let formData = new FormData();
+        formData.append("id", id);
+
+        fetch("ajax/favourite.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(json) {
+                if (a.classList.contains("favourited")) {
+                    a.innerHTML = "Add to favourites";
+                    a.classList.remove("favourited");
+                } else {
+                    a.innerHTML = "Remove from favourites";
+                    a.classList.add("favourited");
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error, id, a);
             });
     });
 }
