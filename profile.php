@@ -2,10 +2,6 @@
 include_once(__DIR__ . "/bootstrap.php");
 $config = parse_ini_file("config/config.ini");
 
-if ($_SESSION['loggedin'] !== true) {
-    header("Location: login.php");
-}
-
 use Cloudinary\Cloudinary;
 use Cloudinary\Transformation\Resize;
 
@@ -14,7 +10,7 @@ $cloudinary = new Cloudinary(
         'cloud' => [
             'cloud_name' => $config['cloud_name'],
             'api_key'    => $config['api_key'],
-            'api_secret' =>  $config['api_secret'],
+            'api_secret' => $config['api_secret'],
         ],
     ]
 );
@@ -23,14 +19,23 @@ $user_id = $_SESSION['user_id'];
 $user = \PromptPlaza\Framework\User::getById($user_id);
 $profile_picture = $user['image'];
 
+if ($_SESSION['loggedin'] !== true) {
+    header("Location: login.php");
+}
+
 if (!empty($_POST)) {
     if (isset($_POST['set_image'])) {
         if (isset($_FILES['image'])) {
             try {
                 $image = new \PromptPlaza\Framework\Image($cloudinary);
-                $newImgName = $image->upload($_FILES['image']);
+                //functie werkt tot hier maar alle vars kunnen gedumpt worden en zien er ok uit
+                $newImgName = $image->upload($_FILES['image']); //crasht hier en geeft exception van de catch
 
+                $user = new \PromptPlaza\Framework\User();
                 $user->imageSave($newImgName, $user_id);
+
+                $user = \PromptPlaza\Framework\User::getById($user_id);
+                $profile_picture = $user['image'];
             } catch (Throwable $e) {
                 $error = $e->getMessage();
             }
