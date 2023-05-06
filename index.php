@@ -151,6 +151,24 @@ if (isset($_GET['details'])) {
                     people like this
                 </div>
 
+                <!-- Toont comments -->
+                <div class="post_comments">
+                    <div class="post_comments_form">
+                        <input type="text" placeholder="Place here your comment" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
+                        <a href="#" class="btn" data-id="<?php echo htmlspecialchars($prompt['id']) ?>">Add comment</a>
+                    </div>
+
+                    <ul class="post_comments_list<?php echo htmlspecialchars($prompt['id']) ?>">
+                        <?php $allComments = \PromptPlaza\Framework\Comment::getComments($prompt['id']);
+                        foreach ($allComments as $c) : ?>
+                            <li>
+                                <strong><?php echo htmlspecialchars($c['firstname']) . " " . htmlspecialchars($c['lastname']); ?></strong>
+                                <?php echo $c['text']; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+
             </div>
         <?php endforeach; ?>
     </div>
