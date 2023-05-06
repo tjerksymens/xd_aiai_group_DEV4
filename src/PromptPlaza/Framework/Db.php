@@ -8,7 +8,7 @@ abstract class Db
 
     private static function getConfig()
     {
-        return parse_ini_file("config/config.ini");
+        return parse_ini_file(dirname(dirname(dirname(__DIR__))) . '/config/config.ini');
     }
 
 

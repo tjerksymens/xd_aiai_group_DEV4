@@ -49,7 +49,6 @@ if (!empty($_POST)) {
     }
 }
 
-
 //prompt filteren
 if (isset($_GET['filter'])) {
     $prompts = \PromptPlaza\Framework\Prompt::getFiltered($_GET['filter']);
@@ -143,6 +142,15 @@ if (isset($_GET['details'])) {
                 <img src="<?php echo $cloudinary->image($prompt['image'])->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="prompt image">
                 <p><?php echo "price: " . htmlspecialchars($prompt['price']); ?></p>
                 <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
+
+                <!-- Toont likes-->
+                <div>
+                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like">Like</a>
+                    <span class='likes' id="likes<?php echo htmlspecialchars($prompt['id']) ?>"><?php echo $prompts = \PromptPlaza\Framework\Prompt::getLikes($prompt['id']); ?></span>
+                    <span class="status"></span>
+                    people like this
+                </div>
+
             </div>
         <?php endforeach; ?>
     </div>
@@ -166,6 +174,7 @@ if (isset($_GET['details'])) {
         <?php endif; ?>
     </div>
 
+    <script src="js/app.js"></script>
 </body>
 
 </html>

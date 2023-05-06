@@ -4,12 +4,13 @@ namespace PromptPlaza\Framework;
 
 class Prompt
 {
-    private $id;
+    public int $id;
     private $prompt;
     private $user_id;
     private $image;
     private $price;
     private $details;
+
 
     public function getPrompt()
     {
@@ -76,7 +77,6 @@ class Prompt
         $this->user_id = $user_id;
         return $this;
     }
-
 
     //haalt alle prompts op en geeft ze terug
     public static function getAll($offset = 0)
@@ -150,5 +150,15 @@ class Prompt
         $statement->bindValue(":details", "%$details%");
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public static function getLikes($id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("select count(*) as count from likes where prompt_id = :promptid");
+        $statement->bindValue(":promptid", $id);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $result['count'];
     }
 }
