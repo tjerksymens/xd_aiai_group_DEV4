@@ -5,6 +5,7 @@ namespace PromptPlaza\Framework;
 class User
 {
     private string $email;
+    private string $username;
     private string $firstname;
     private string $lastname;
     private string $password;
@@ -27,6 +28,21 @@ class User
     public function getEmail()
     {
         return $this->email;
+    }
+
+    public function setUsername($username)
+    {
+        if (empty($username)) {
+            throw new \Exception("Username cannot be empty.");
+        } else {
+            $this->username = $username;
+            return $this;
+        }
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
     }
 
     public function setFirstname($firstname)
@@ -187,8 +203,9 @@ class User
     public function save()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("INSERT INTO users (email, password, firstname, lastname, validationcode, validated) VALUES (:email, :password, :firstname, :lastname, :validationcode, :validated)");
+        $statement = $conn->prepare("INSERT INTO users (email, username, password, firstname, lastname, validationcode, validated) VALUES (:email, :password, :firstname, :lastname, :validationcode, :validated)");
         $statement->bindValue(":email", $this->email);
+        $statement->bindValue(":username", $this->username);
         $statement->bindValue(":password", $this->password);
         $statement->bindValue(":firstname", $this->firstname);
         $statement->bindValue(":lastname", $this->lastname);
@@ -258,6 +275,23 @@ class User
             return true;
         } else {
             // The email does not exist in the database
+            return false;
+        }
+    }
+
+    public static function checkExistingUsername($username)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
+        $statement->bindValue(":username", $username);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if (!empty($result)) {
+            // The username already exists in the database
+            return true;
+        } else {
+            // The username does not exist in the database
             return false;
         }
     }
