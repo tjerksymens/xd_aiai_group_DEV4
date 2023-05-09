@@ -14,7 +14,7 @@ if (!empty($_POST)) {
 
     //get firstname and lastname
     $user = \PromptPlaza\Framework\User::getById($_SESSION['user_id']);
-    $lastname = $user['username'];
+    $username = $user['username'];
 
 
     //succes teruggeven
