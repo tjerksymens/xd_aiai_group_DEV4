@@ -64,12 +64,12 @@ if (!empty($_POST)) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']) ; ?></title>
 </head>
 
 <body>
     <?php include_once("nav.inc.php"); ?>
-    <h1>Profile</h1>
+    <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']) ; ?></h1>
 
     <form action="" method="post" enctype="multipart/form-data">
         <?php if (!empty($profile_picture)) : ?>

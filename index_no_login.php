@@ -30,7 +30,8 @@ if (isset($_SESSION["loggedin"])) {
     <div class="prompts">
         <?php foreach ($prompts as $prompt) : ?>
             <div class="prompt">
-                <p><strong><?php echo htmlspecialchars($prompt['firstname']) . " " . htmlspecialchars($prompt['lastname']); ?></strong> <?php echo "prompt: " . htmlspecialchars(substr($prompt['prompt'], 0, 20)) . '...'; ?></p>
+                <a href="other_user_profile.php?username=$prompt['username']"><?php echo htmlspecialchars($prompt['username']); ?></a>    
+                <p><?php echo "prompt: " . htmlspecialchars(substr($prompt['prompt'], 0, 20)) . '...'; ?></p>
                 <a href="login.php">login to see full prompt</a>
             </div>
         <?php endforeach; ?>

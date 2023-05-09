@@ -137,7 +137,7 @@ if (isset($_GET['details'])) {
     <div class="prompts">
         <?php foreach ($prompts as $prompt) : ?>
             <div class="prompt">
-                <strong><?php echo htmlspecialchars($prompt['firstname']) . " " . htmlspecialchars($prompt['lastname']); ?></strong>
+                <a href="other_user_profile.php?username=$prompt['username']"><?php echo htmlspecialchars($prompt['username']); ?></a>
                 <p><?php echo "prompt: " . htmlspecialchars($prompt['prompt']); ?></p>
                 <img src="<?php echo $cloudinary->image($prompt['image'])->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="prompt image">
                 <p><?php echo "price: " . htmlspecialchars($prompt['price']); ?></p>

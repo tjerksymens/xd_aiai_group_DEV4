@@ -262,6 +262,16 @@ class User
         return $result;
     }
 
+    public static function getByUsername($username)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM users WHERE username = :username");
+        $statement->bindValue(":username", $username);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     public static function checkExistingEmail($email)
     {
         $conn = Db::getConnection();
