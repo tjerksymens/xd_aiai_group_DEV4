@@ -12,10 +12,18 @@ if (!empty($_POST)) {
     //save comment
     $comment->save();
 
+    //get firstname and lastname
+    $user = \PromptPlaza\Framework\User::getById($_SESSION['user_id']);
+    $firstname = $user['firstname'];
+    $lastname = $user['lastname'];
+
+
     //succes teruggeven
     $response = [
         'status' => 'success',
         'body' => htmlspecialchars($comment->getText()),
+        'firstname' => htmlspecialchars($firstname),
+        'lastname' => htmlspecialchars($lastname),
         'message' => 'Comment saved'
     ];
 

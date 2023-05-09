@@ -59,6 +59,9 @@ if (isset($_GET['details'])) {
     $prompts = \PromptPlaza\Framework\Prompt::searchDetails($_GET['details']);
 }
 
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -67,6 +70,7 @@ if (isset($_GET['details'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <title>PromptPlaza</title>
 </head>
 
@@ -153,8 +157,8 @@ if (isset($_GET['details'])) {
 
                 <!-- Toont add to favourite -->
                 <div>
-                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite" id="favourite<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
-                    <span class="status"></span>
+                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite_add" id="favourite_add<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
+                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite_remove hidden" id="favourite_remove<?php echo htmlspecialchars($prompt['id']) ?>">Remove from favourites</a>
                 </div>
 
 
@@ -162,7 +166,7 @@ if (isset($_GET['details'])) {
                 <div class="post_comments">
                     <div class="post_comments_form">
                         <input type="text" placeholder="Place here your comment" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
-                        <a href="#" class="btn" data-id="<?php echo htmlspecialchars($prompt['id']) ?>">Add comment</a>
+                        <a href="#" class="btn_comments" data-id="<?php echo htmlspecialchars($prompt['id']) ?>">Add comment</a>
                     </div>
 
                     <ul class="post_comments_list<?php echo htmlspecialchars($prompt['id']) ?>">
@@ -199,7 +203,7 @@ if (isset($_GET['details'])) {
         <?php endif; ?>
     </div>
 
-    <script src="js/app.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
