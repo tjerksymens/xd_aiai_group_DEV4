@@ -50,7 +50,7 @@ for (let i = 0; i < btns.length; i++) {
             .then(response => response.json())
             .then(result => {
                 let newComment = document.createElement('li');
-                newComment.innerHTML = '<strong>' + result.firstname + ' ' + result.lastname + '</strong>' + ' ' + result.body;
+                newComment.innerHTML = '<strong>' + result.username + '</strong>' + ' ' + result.body;
                 document
                     .querySelector(".post_comments_list" + id)
                     .appendChild(newComment);

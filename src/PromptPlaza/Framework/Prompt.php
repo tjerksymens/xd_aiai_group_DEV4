@@ -85,7 +85,7 @@ class Prompt
             $conn = Db::getConnection();
             $statement = $conn->prepare(
                 "
-                SELECT prompts.*, users.firstname, users.lastname ,users.username
+                SELECT prompts.*, users.firstname, users.lastname , users.username
                 FROM prompts 
                 JOIN users ON prompts.user_id = users.id 
                 ORDER BY prompts.id DESC

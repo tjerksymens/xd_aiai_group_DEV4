@@ -60,7 +60,7 @@ class Comment
     {
         $conn = Db::getConnection();
         $statement = $conn->prepare("
-            SELECT comments.*, users.firstname, users.lastname 
+            SELECT comments.*, users.firstname, users.lastname, users.username
             FROM comments 
             JOIN users ON comments.user_id = users.id 
             WHERE comments.prompt_id LIKE :promptid 

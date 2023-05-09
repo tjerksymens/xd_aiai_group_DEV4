@@ -14,16 +14,14 @@ if (!empty($_POST)) {
 
     //get firstname and lastname
     $user = \PromptPlaza\Framework\User::getById($_SESSION['user_id']);
-    $firstname = $user['firstname'];
-    $lastname = $user['lastname'];
+    $lastname = $user['username'];
 
 
     //succes teruggeven
     $response = [
         'status' => 'success',
         'body' => htmlspecialchars($comment->getText()),
-        'firstname' => htmlspecialchars($firstname),
-        'lastname' => htmlspecialchars($lastname),
+        'username' => htmlspecialchars($username),
         'message' => 'Comment saved'
     ];
 
