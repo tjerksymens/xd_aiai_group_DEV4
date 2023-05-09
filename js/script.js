@@ -27,8 +27,8 @@ for (let i = 0; i < links.length; i++) {
     });
 }
 
-//add event click on all btns with class btn
-let btns = document.querySelectorAll(".btn");
+//add event click on all btns with class btn_comments
+let btns = document.querySelectorAll(".btn_comments");
 for (let i = 0; i < btns.length; i++) {
     btns[i].addEventListener("click", function(e) {
         e.preventDefault();
@@ -50,7 +50,7 @@ for (let i = 0; i < btns.length; i++) {
             .then(response => response.json())
             .then(result => {
                 let newComment = document.createElement('li');
-                 newComment.innerHTML = result.body;
+                newComment.innerHTML = '<strong>' + result.firstname + ' ' + result.lastname + '</strong>' + ' ' + result.body;
                 document
                     .querySelector(".post_comments_list" + id)
                     .appendChild(newComment);
@@ -60,6 +60,7 @@ for (let i = 0; i < btns.length; i++) {
             });
     });
 }
+
 
 let favourites = document.querySelectorAll(".favourite");
 for (let i = 0; i < favourites.length; i++) {
