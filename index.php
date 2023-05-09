@@ -158,7 +158,6 @@ if (isset($_GET['details'])) {
                 <!-- Toont add to favourite -->
                 <div>
                     <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite_add" id="favourite_add<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
-                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite_remove hidden" id="favourite_remove<?php echo htmlspecialchars($prompt['id']) ?>">Remove from favourites</a>
                 </div>
 
 
@@ -173,7 +172,7 @@ if (isset($_GET['details'])) {
                         <?php $allComments = \PromptPlaza\Framework\Comment::getComments($prompt['id']);
                         foreach ($allComments as $c) : ?>
                             <li>
-                                <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
+                                <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($c['username']); ?>"><?php echo htmlspecialchars($c['username']); ?></a></strong>
                                 <?php echo $c['text']; ?>
                             </li>
                         <?php endforeach; ?>
