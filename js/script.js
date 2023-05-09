@@ -6,6 +6,7 @@ for (let i = 0; i < links.length; i++) {
         // get the id of the post
         let id = this.getAttribute("data-id");
         let span = document.querySelector("#likes" + id);
+        let a = document.querySelector("#like" + id);
 
         // fetch (POST) to ajax/lik.php, use formdata
         let formData = new FormData();
@@ -19,6 +20,13 @@ for (let i = 0; i < links.length; i++) {
                 return response.json();
             })
             .then(function(json) {
+                if (a.classList.contains("liked")) {
+                    a.innerHTML = "Like";
+                    a.classList.remove("liked");
+                } else {
+                    a.innerHTML = "Liked";
+                    a.classList.add("liked");
+                }
                 span.innerHTML = json.likes;
             })
             .catch(error => {
