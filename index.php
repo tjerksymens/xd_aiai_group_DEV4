@@ -141,7 +141,7 @@ if (isset($_GET['details'])) {
     <div class="prompts">
         <?php foreach ($prompts as $prompt) : ?>
             <div class="prompt">
-                <a href="other_user_profile.php?username=$prompt['username']"><?php echo htmlspecialchars($prompt['username']); ?></a>
+                <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
                 <p><?php echo "prompt: " . htmlspecialchars($prompt['prompt']); ?></p>
                 <img src="<?php echo $cloudinary->image($prompt['image'])->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="prompt image">
                 <p><?php echo "price: " . htmlspecialchars($prompt['price']); ?></p>
@@ -172,7 +172,7 @@ if (isset($_GET['details'])) {
                         <?php $allComments = \PromptPlaza\Framework\Comment::getComments($prompt['id']);
                         foreach ($allComments as $c) : ?>
                             <li>
-                                <strong><?php echo htmlspecialchars($c['username']) ?></strong>
+                                <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($c['username']); ?>"><?php echo htmlspecialchars($c['username']); ?></a></strong>
                                 <?php echo $c['text']; ?>
                             </li>
                         <?php endforeach; ?>

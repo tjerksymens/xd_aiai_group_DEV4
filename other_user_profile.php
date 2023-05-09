@@ -21,46 +21,17 @@ $prompts = \PromptPlaza\Framework\Prompt::getAll($offset);
 $totalPrompts = \PromptPlaza\Framework\Prompt::countAll();
 $totalPages = ceil($totalPrompts / 10);
 
-$user_id = $_SESSION['user_id'];
-$user = \PromptPlaza\Framework\User::getById($user_id);
+//ga naar home als er geen profilename is meegegeven
+if (!isset($_GET['username'])) {
+    header('location: index.php');
+}
+
+$user = \PromptPlaza\Framework\User::getByUsername($_GET['username']);
+//ga naar eigen profiel als je op je eigen naam klikt
+/*if($_GET['username'] == $user['username']){
+    header('location: profile.php');
+}*/
 $profile_picture = $user['image'];
-
-if ($_SESSION['loggedin'] !== true) {
-    header("Location: login.php");
-}
-
-if (!empty($_POST)) {
-    if (isset($_POST['set_image'])) {
-        if (isset($_FILES['image'])) {
-            try {
-                $image = new \PromptPlaza\Framework\Image($cloudinary);
-                //functie werkt tot hier maar alle vars kunnen gedumpt worden en zien er ok uit
-                $newImgName = $image->upload($_FILES['image']); //crasht hier en geeft exception van de catch
-
-                $user = new \PromptPlaza\Framework\User();
-                $user->imageSave($newImgName, $user_id);
-
-                $user = \PromptPlaza\Framework\User::getById($user_id);
-                $profile_picture = $user['image'];
-            } catch (Throwable $e) {
-                $error = $e->getMessage();
-            }
-        } else {
-            $error = "No image selected.";
-        }
-    }
-
-    if (isset($_POST['delete_account'])) {
-        //ziet er gevaarlijk uit. misschien een popup maken om het account deleten te beschermen
-        $user->delete();
-        session_destroy();
-        header("Location: login.php");
-    }
-
-    if (isset($_POST['reset_password'])) {
-        header("Location: reset_password.php");
-    }
-}
 
 ?>
 <!DOCTYPE html>
@@ -77,47 +48,29 @@ if (!empty($_POST)) {
     <?php include_once("nav.inc.php"); ?>
     <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']) ; ?></h1>
 
-    <form action="" method="post" enctype="multipart/form-data">
-        <?php if (!empty($profile_picture)) : ?>
-            <div class="profile_picture">
-                <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
-            </div>
-        <?php else : ?>
-            <div class="profile_picture">
-                <img src="uploads/profile_picture_placeholder.jpg" alt="profile picture" width="300px">
-            </div>
-        <?php endif; ?>
-
-        <?php if (isset($error)) : ?>
-            <div class="form__error">
-                <p>
-                    <?php echo $error; ?>
-                </p>
-            </div>
-        <?php endif; ?>
-
-        <div class="form__field">
-            <label for="image">Upload image</label>
-            <input type="file" name="image">
+    <?php if (!empty($profile_picture)) : ?>
+        <div class="profile_picture">
+             <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
         </div>
-        <div class="form__field">
-            <input type="submit" value="Upload a profile picture" class="btn btn--primary" name="set_image">
+    <?php else : ?>
+        <div class="profile_picture">
+            <img src="uploads/profile_picture_placeholder.jpg" alt="profile picture" width="300px">
         </div>
-    </form>
+    <?php endif; ?>
 
-    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-    <form action="" method="post">
-        <button type="submit" name="reset_password">Reset Password</button>
-    </form>
-    <form action="" method="post">
-        <button type="submit" name="delete_account">Delete Account</button>
-    </form>
+    <?php if (isset($error)) : ?>
+        <div class="form__error">
+            <p>
+                <?php echo $error; ?>
+            </p>
+        </div>
+    <?php endif; ?>
 
-    <h2>Your prompts</h2>
+    <h2>Prompts by this user</h2>
 
     <!-- Toont zoeken op details -->
     <form action="" method="get">
-        <label for="details">Browse your prompts by details</label>
+        <label for="details">Browse user prompts by details</label>
         <input type="text" name="details">
         <input type="submit" value="Browse" class="btn btn--primary">
     </form>
