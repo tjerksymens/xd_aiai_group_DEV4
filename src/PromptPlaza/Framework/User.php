@@ -203,7 +203,7 @@ class User
     public function save()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("INSERT INTO users (email, username, password, firstname, lastname, validationcode, validated) VALUES (:email, :password, :firstname, :lastname, :validationcode, :validated)");
+        $statement = $conn->prepare("INSERT INTO users (email, username, password, firstname, lastname, validationcode, validated) VALUES (:email, :username, :password, :firstname, :lastname, :validationcode, :validated)");
         $statement->bindValue(":email", $this->email);
         $statement->bindValue(":username", $this->username);
         $statement->bindValue(":password", $this->password);
