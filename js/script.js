@@ -35,6 +35,29 @@ for (let i = 0; i < links.length; i++) {
     });
 }
 
+fetch("ajax/getLikes.php")
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(json) {
+    let likes = json.liked;
+        console.log(likes);
+        for (let i = 0; i < likes.length; i++) {
+            // get the id of the favourited prompt
+            let id = likes[i];
+            let a = document.querySelector("#like" + id);
+
+            
+            // update the text and class of the corresponding element on the page
+            a.innerHTML = "Liked";
+            a.classList.add("liked");
+        }
+    })
+    .catch(error => {
+    console.error('Error:', error);
+});
+
+
 //add event click on all btns with class btn_comments
 let btns = document.querySelectorAll(".btn_comments");
 for (let i = 0; i < btns.length; i++) {
@@ -104,3 +127,25 @@ for (let i = 0; i < favourites.length; i++) {
             });
     });
 }
+
+
+fetch("ajax/getFavourites.php")
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(json) {
+    let favourites = json.favourited;
+        console.log(favourites);
+        for (let i = 0; i < favourites.length; i++) {
+            // get the id of the favourited prompt
+            let id = favourites[i];
+            let a = document.querySelector("#favourite" + id);
+            
+            // update the text and class of the corresponding element on the page
+            a.innerHTML = "Remove from favourites";
+            a.classList.add("favourited");
+        }
+    })
+    .catch(error => {
+    console.error('Error:', error);
+});

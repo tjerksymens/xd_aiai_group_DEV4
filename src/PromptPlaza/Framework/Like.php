@@ -45,6 +45,11 @@ class Like
             $statement->bindValue(":promptid", $this->getPromptId());
             $statement->bindValue(":userid", $this->getUserId());
             return $statement->execute();
+        } else {
+            $statement = $conn->prepare("DELETE FROM likes WHERE prompt_id = :promptid AND user_id = :userid");
+            $statement->bindValue(":promptid", $this->getPromptId());
+            $statement->bindValue(":userid", $this->getUserId());
+            return $statement->execute();
         }
 
         return false; // user has already liked the post

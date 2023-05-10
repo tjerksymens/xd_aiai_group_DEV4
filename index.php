@@ -2,6 +2,11 @@
 include_once(__DIR__ . "/bootstrap.php");
 $config = parse_ini_file("config/config.ini");
 
+//session login check
+if ($_SESSION['loggedin'] !== true) {
+    header('location: index_no_login.php');
+}
+
 use Cloudinary\Cloudinary;
 use Cloudinary\Transformation\Resize;
 
@@ -20,11 +25,6 @@ $offset = ($page - 1) * 10;
 $prompts = \PromptPlaza\Framework\Prompt::getAll($offset);
 $totalPrompts = \PromptPlaza\Framework\Prompt::countAll();
 $totalPages = ceil($totalPrompts / 10);
-
-//session login check
-if ($_SESSION['loggedin'] !== true) {
-    header('location: index_no_login.php');
-}
 
 //prompt toevoegen
 if (!empty($_POST)) {
@@ -58,9 +58,6 @@ if (isset($_GET['filter'])) {
 if (isset($_GET['details'])) {
     $prompts = \PromptPlaza\Framework\Prompt::searchDetails($_GET['details']);
 }
-
-
-
 
 ?>
 <!DOCTYPE html>
@@ -157,7 +154,7 @@ if (isset($_GET['details'])) {
 
                 <!-- Toont add to favourite -->
                 <div>
-                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite_add" id="favourite_add<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
+                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite" id="favourite<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
                 </div>
 
 

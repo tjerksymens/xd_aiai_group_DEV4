@@ -189,6 +189,22 @@ class Prompt
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    //get all liked
+    public static function getAllLiked($userId)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("
+        SELECT likes.*, prompts.*, users.firstname, users.lastname 
+        FROM likes
+        JOIN prompts ON likes.prompt_id = prompts.id 
+        JOIN users ON likes.user_id = users.id 
+        WHERE likes.user_id = :userId
+        ORDER BY prompts.id DESC");
+        $statement->bindValue(":userId", $userId);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     //check if favourite exists
     public static function checkFavourite($userId, $promptId)
     {
