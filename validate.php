@@ -10,7 +10,7 @@ if(!empty($_POST)){
 		$user = new \PromptPlaza\Framework\User();
 		if($user->compareValidationcodeById($user_id, $validationcode)) {
 			$user->validate($user_id); //verandert value van validate van 0 naar 1 waardoor deze gechecked kan worden in de login.php
-			header("Location: login.php");
+			$message = true;
 		}
 		else {
 			$error = true;
@@ -43,6 +43,14 @@ if(!empty($_POST)){
 				</div>
 				<?php endif; ?>
 
+				<?php if( isset($message) ):?>
+				<div class="form__message">
+					<p>
+						You have been validated. You can now login.
+					</p>
+					<a href="login.php">Login here</a>
+				</div>
+				<?php else: ?>
 				<div class="form__field">
 					<label for="ValidationCode">validation code: </label>
 					<input type="text" name="validationcode">
@@ -51,6 +59,7 @@ if(!empty($_POST)){
 				<div class="form__field">
 					<input type="submit" value="Validate" class="btn btn--primary">	
 				</div>
+				<?php endif; ?>
 			</form>
 		</div>
 	</div>
