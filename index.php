@@ -41,6 +41,7 @@ if (!empty($_POST)) {
             $prompt->setDetails($_POST['details']);
             $prompt->setUserId($_SESSION['user_id']);
             $prompt->save();
+            header("Refresh:0");
         } catch (Throwable $e) {
             $error = $e->getMessage();
         }
