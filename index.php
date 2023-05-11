@@ -20,12 +20,6 @@ $cloudinary = new Cloudinary(
     ]
 );
 
-$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$offset = ($page - 1) * 10;
-$prompts = \PromptPlaza\Framework\Prompt::getAll($offset);
-$totalPrompts = \PromptPlaza\Framework\Prompt::countAll();
-$totalPages = ceil($totalPrompts / 10);
-
 //prompt toevoegen
 if (!empty($_POST)) {
     //img upload en check
@@ -41,6 +35,12 @@ if (!empty($_POST)) {
             $prompt->setDetails($_POST['details']);
             $prompt->setUserId($_SESSION['user_id']);
             $prompt->save();
+
+            $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+            $offset = ($page - 1) * 10;
+            $prompts = \PromptPlaza\Framework\Prompt::getAll($offset);
+            $totalPrompts = \PromptPlaza\Framework\Prompt::countAll();
+            $totalPages = ceil($totalPrompts / 10);
         } catch (Throwable $e) {
             $error = $e->getMessage();
         }
@@ -48,6 +48,12 @@ if (!empty($_POST)) {
         $error = "No image selected.";
     }
 }
+
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$offset = ($page - 1) * 10;
+$prompts = \PromptPlaza\Framework\Prompt::getAll($offset);
+$totalPrompts = \PromptPlaza\Framework\Prompt::countAll();
+$totalPages = ceil($totalPrompts / 10);
 
 //prompt filteren
 if (isset($_GET['filter'])) {
