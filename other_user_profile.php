@@ -28,9 +28,9 @@ if (!isset($_GET['username'])) {
 
 $user = \PromptPlaza\Framework\User::getByUsername($_GET['username']);
 //ga naar eigen profiel als je op je eigen naam klikt
-/*if($_GET['username'] == $user['username']){
+if($_GET['username'] == $user['username']){
     header('location: profile.php');
-}*/
+}
 $profile_picture = $user['image'];
 
 ?>
