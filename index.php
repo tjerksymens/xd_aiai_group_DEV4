@@ -81,64 +81,68 @@ if (isset($_GET['details'])) {
     <?php include_once("nav.inc.php"); ?>
     <h1>Homepage</h1>
 
-    <!-- Toont formulier om prompt toe te voegen -->
-    <form action="" method="post" enctype="multipart/form-data">
-        <?php if (isset($error)) : ?>
-            <div class="form__error">
-                <p>
-                    <?php echo $error; ?>
-                </p>
-            </div>
-        <?php endif; ?>
-        <div class="form__field">
-            <label for="prompt">Prompt</label>
-            <input type="text" name="prompt">
+    <div id="Homepage_Prompt_Forms">
+        <div id="Prompt_Form">
+            <!-- Toont formulier om prompt toe te voegen -->
+            <form action="" method="post" enctype="multipart/form-data">
+                <?php if (isset($error)) : ?>
+                    <div class="form__error">
+                        <p>
+                            <?php echo $error; ?>
+                        </p>
+                    </div>
+                <?php endif; ?>
+                <div class="form__field">
+                    <label for="prompt">Prompt</label>
+                    <input type="text" name="prompt">
+                </div>
+                <div class="form__field">
+                    <label for="image">Upload image</label>
+                    <input type="file" name="image">
+                </div>
+                <div class="form__field">
+                    <label for="price">Select price</label>
+                    <select name="price">
+                        <option value="free">Free</option>
+                        <option value="1 credit">1 credit</option>
+                        <option value="2 credits">2 credits</option>
+                    </select>
+                </div>
+                <div class="form__field">
+                    <label for="details">Type and details of model</label>
+                    <input type="text" name="details">
+                </div>
+                <div class="form__field">
+                    <input type="submit" value="Add" class="btn btn--primary">
+                </div>
+            </form>
         </div>
-        <div class="form__field">
-            <label for="image">Upload image</label>
-            <input type="file" name="image">
-        </div>
-        <div class="form__field">
-            <label for="price">Select price</label>
-            <select name="price">
-                <option value="free">Free</option>
-                <option value="1 credit">1 credit</option>
-                <option value="2 credits">2 credits</option>
-            </select>
-        </div>
-        <div class="form__field">
-            <label for="details">Type and details of model</label>
-            <input type="text" name="details">
-        </div>
-        <div class="form__field">
-            <input type="submit" value="Add" class="btn btn--primary">
-        </div>
-    </form>
+        <div id="Prompt_Filter">
+            <!-- Toont filter op prijs -->
+            <form action="" method="get">
+                <label for="filter">Filter on price</label>
+                <select name="filter">
+                    <option value="free">Free</option>
+                    <option value="1 credit">1 credit</option>
+                    <option value="2 credits">2 credits</option>
+                </select>
+                <input type="submit" value="Filter" class="btn btn--primary">
+            </form>
+            <?php
+            if (isset($_GET['filter'])) {
+                $selected_value = $_GET['filter'];
+                echo "You selected: " . $selected_value;
+            }
+            ?>
 
-    <!-- Toont filter op prijs -->
-    <form action="" method="get">
-        <label for="filter">Filter on price</label>
-        <select name="filter">
-            <option value="free">Free</option>
-            <option value="1 credit">1 credit</option>
-            <option value="2 credits">2 credits</option>
-        </select>
-        <input type="submit" value="Filter" class="btn btn--primary">
-    </form>
-
-    <?php
-    if (isset($_GET['filter'])) {
-        $selected_value = $_GET['filter'];
-        echo "You selected: " . $selected_value;
-    }
-    ?>
-
-    <!-- Toont zoeken op details -->
-    <form action="" method="get">
-        <label for="details">Browse by details</label>
-        <input type="text" name="details">
-        <input type="submit" value="Browse" class="btn btn--primary">
-    </form>
+            <!-- Toont zoeken op details -->
+            <form action="" method="get">
+                <label for="details">Browse by details</label>
+                <input type="text" name="details">
+                <input type="submit" value="Browse" class="btn btn--primary">
+            </form>
+        </div>
+    </div>
 
     <!-- Toont prompts -->
     <div class="prompts">
@@ -167,7 +171,7 @@ if (isset($_GET['details'])) {
                 <!-- Toont comments -->
                 <div class="post_comments">
                     <div class="post_comments_form">
-                        <input type="text" placeholder="Place here your comment" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
+                        <input type="text" placeholder="Place your comment here" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
                         <a href="#" class="btn_comments" data-id="<?php echo htmlspecialchars($prompt['id']) ?>">Add comment</a>
                     </div>
 

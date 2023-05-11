@@ -1,3 +1,98 @@
 .hidden {
     display: none;
 }
+
+#nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5rem;
+    background-color: #C0EEF2;
+    display: flex;
+}
+
+#nav #logout_button {
+    color: red;
+}
+
+#nav #logout_button:hover {
+    color: #537FE7;
+}
+
+#nav a {
+    color: #181823;
+    display: flex;
+    align-items: center;
+    font-family: 'signo', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.7rem;
+    margin-left: 40px;
+}
+
+#nav a:hover {
+    color: #537FE7;
+}
+
+.logo {
+    font-family: 'Pacifico';
+    font-size: 2rem;
+    color: #537FE7;
+    margin-right: 50px;
+}
+
+.logo:hover {
+    color: #E9F8F9;
+}
+
+body {
+    background-color: #181823;
+    color: #E9F8F9;
+    margin-top: 5rem;
+}
+
+h1 {
+    font-family: 'signo', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: #537FE7;
+}
+
+a:hover {
+    color: #C0EEF2;
+}
+
+p {
+    font-family: 'ministry', sans-serif;
+    font-style: normal;
+    font-weight: 100;
+}
+
+#Homepage_Prompt_Forms {
+    display: flex;
+    justify-content: center;
+}
+
+#Prompt_Form {
+    background-color: #537FE7;
+    padding: 10px;
+    border-radius: 10px;
+    width: 40%;
+}
+
+#Prompt_Filter {
+    background-color: #537FE7;
+    padding: 10px;
+    margin-left: 5%;
+    border-radius: 10px;
+    width: 40%;
+}
