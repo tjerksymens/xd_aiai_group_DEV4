@@ -48,7 +48,7 @@ $prompts = \PromptPlaza\Framework\Prompt::getAllFavourites($_SESSION['user_id'])
 
                 <!-- Toont likes-->
                 <div>
-                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like">Like</a>
+                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like" id="like<?php echo htmlspecialchars($prompt['id']) ?>">Like</a>
                     <span class='likes' id="likes<?php echo htmlspecialchars($prompt['id']) ?>"><?php echo $prompts = \PromptPlaza\Framework\Prompt::getLikes($prompt['id']); ?></span>
                     <span class="status"></span>
                     people like this
@@ -83,7 +83,7 @@ $prompts = \PromptPlaza\Framework\Prompt::getAllFavourites($_SESSION['user_id'])
         <?php endforeach; ?>
     </div>
 
-    <script src="js/app.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
