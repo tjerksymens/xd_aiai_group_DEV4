@@ -50,7 +50,7 @@
 				<?php endif; ?>
 
 				<div class="form__field">
-					<label for="Email">Email</label>
+					<label for="Email">Username or email</label>
 					<input type="text" name="email">
 				</div>
 				<div class="form__field">

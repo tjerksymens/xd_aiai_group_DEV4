@@ -214,14 +214,14 @@ class User
         return $statement->execute();
     }
 
-    public function canLogin($email, $password)
+    public function canLogin($username, $password)
     {
-        if (empty($email) || empty($password)) {
+        if (empty($username) || empty($password)) {
             throw new \Exception("Email and password are required.");
         } else {
             $conn = \PromptPlaza\Framework\Db::getConnection();
-            $statement = $conn->prepare("SELECT * FROM users WHERE email = :email");
-            $statement->bindValue(":email", $email);
+            $statement = $conn->prepare("SELECT * FROM users WHERE email = :email OR username = :email");
+            $statement->bindValue(":email", $username);
             $statement->execute();
             $user = $statement->fetch(\PDO::FETCH_ASSOC);
             $hash = $user['password'];
@@ -333,7 +333,7 @@ class User
     public static function checkValidated($email)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT validated FROM users WHERE email = :email");
+        $statement = $conn->prepare("SELECT validated FROM users WHERE email = :email OR username = :email");
         $statement->bindValue(":email", $email);
         $statement->execute();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
