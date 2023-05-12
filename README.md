@@ -7,6 +7,7 @@ tabel users met daarin id, email, username, password, firstname, lastname, valid
 tabel prompts met daarin id, prompt, user_id, image, price, details
 tabel comments met daarin id, text, prompt_id, user_id
 tabel likes met daarin id, prompt_id, user_id, date_created
+tabel favourites met daarin id, prompt_id, user_id
 
 Als je een werkende reset password wil, moet je de url in de User class en resetPassword functie handmatig aanpassen zodat deze lokaal werkt.
 Dit moet gebeuren via de config

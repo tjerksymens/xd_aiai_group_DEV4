@@ -19,6 +19,7 @@ if (isset($_SESSION["loggedin"])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
     <title>PromptPlaza</title>
 </head>
 
@@ -30,7 +31,7 @@ if (isset($_SESSION["loggedin"])) {
     <div class="prompts">
         <?php foreach ($prompts as $prompt) : ?>
             <div class="prompt">
-                <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>    
+                <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
                 <p><?php echo "prompt: " . htmlspecialchars(substr($prompt['prompt'], 0, 20)) . '...'; ?></p>
                 <a href="login.php">login to see full prompt</a>
             </div>

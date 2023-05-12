@@ -28,7 +28,7 @@ if (!isset($_GET['username'])) {
 
 $user = \PromptPlaza\Framework\User::getByUsername($_GET['username']);
 //ga naar eigen profiel als je op je eigen naam klikt
-if($_GET['username'] == $user['username']){
+if ($_GET['username'] == $user['username']) {
     header('location: profile.php');
 }
 $profile_picture = $user['image'];
@@ -41,16 +41,17 @@ $profile_picture = $user['image'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']) ; ?></title>
+    <link rel="stylesheet" href="css/style.css">
+    <title><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></title>
 </head>
 
 <body>
     <?php include_once("nav.inc.php"); ?>
-    <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']) ; ?></h1>
+    <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></h1>
 
     <?php if (!empty($profile_picture)) : ?>
         <div class="profile_picture">
-             <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
+            <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
         </div>
     <?php else : ?>
         <div class="profile_picture">
@@ -77,7 +78,7 @@ $profile_picture = $user['image'];
 
     <!-- Toont prompts -->
     <div class="prompts">
-    <?php foreach ($prompts as $prompt) : ?>
+        <?php foreach ($prompts as $prompt) : ?>
             <?php if ($prompt['username'] == $user['username']) : ?>
                 <div class="prompt">
                     <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
