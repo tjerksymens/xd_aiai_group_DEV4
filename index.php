@@ -38,8 +38,8 @@ if (!empty($_POST)) {
 
             $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
             $offset = ($page - 1) * 10;
-            $prompts = \PromptPlaza\Framework\Prompt::getAll($offset);
-            $totalPrompts = \PromptPlaza\Framework\Prompt::countAll();
+            $prompts->getAll($offset);
+            $totalPrompts->countAll();
             $totalPages = ceil($totalPrompts / 10);
         } catch (Throwable $e) {
             $error = $e->getMessage();

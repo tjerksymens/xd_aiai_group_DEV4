@@ -34,8 +34,7 @@ if (!empty($_POST)) {
         if (isset($_FILES['image'])) {
             try {
                 $image = new \PromptPlaza\Framework\Image($cloudinary);
-                //functie werkt tot hier maar alle vars kunnen gedumpt worden en zien er ok uit
-                $newImgName = $image->upload($_FILES['image']); //crasht hier en geeft exception van de catch
+                $newImgName = $image->upload($_FILES['image']);
 
                 $user = new \PromptPlaza\Framework\User();
                 $user->imageSave($newImgName, $user_id);
@@ -51,10 +50,14 @@ if (!empty($_POST)) {
     }
 
     if (isset($_POST['delete_account'])) {
-        //ziet er gevaarlijk uit. misschien een popup maken om het account deleten te beschermen
         $user->delete();
         session_destroy();
         header("Location: login.php");
+    }
+
+    if (isset($_POST['delete_prompt'])) {
+        $prompt_id = $_POST['prompt_id'];
+        $prompt = \PromptPlaza\Framework\Prompt::deletePrompt($prompt_id);
     }
 
     if (isset($_POST['reset_password'])) {
@@ -70,12 +73,12 @@ if (!empty($_POST)) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']) ; ?></title>
+    <title><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></title>
 </head>
 
 <body>
     <?php include_once("nav.inc.php"); ?>
-    <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']) ; ?></h1>
+    <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></h1>
 
     <form action="" method="post" enctype="multipart/form-data">
         <?php if (!empty($profile_picture)) : ?>
@@ -124,7 +127,7 @@ if (!empty($_POST)) {
 
     <!-- Toont prompts -->
     <div class="prompts">
-    <?php foreach ($prompts as $prompt) : ?>
+        <?php foreach ($prompts as $prompt) : ?>
             <?php if ($prompt['username'] == $user['username']) : ?>
                 <div class="prompt">
                     <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
@@ -132,6 +135,10 @@ if (!empty($_POST)) {
                     <img src="<?php echo $cloudinary->image($prompt['image'])->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="prompt image">
                     <p><?php echo "price: " . htmlspecialchars($prompt['price']); ?></p>
                     <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
+                    <form action="" method="post">
+                        <button type="submit" name="delete_prompt">Delete Prompt</button>
+                        <input type="hidden" name="prompt_id" value="<?php echo htmlspecialchars($prompt['id']) ?>">
+                    </form>
 
                     <!-- Toont likes-->
                     <div>

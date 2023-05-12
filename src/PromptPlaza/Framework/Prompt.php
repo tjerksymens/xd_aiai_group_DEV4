@@ -215,4 +215,13 @@ class Prompt
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    //delete prompt
+    public static function deletePrompt($promptId)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("DELETE FROM prompts WHERE id = :promptId");
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+    }
 }
