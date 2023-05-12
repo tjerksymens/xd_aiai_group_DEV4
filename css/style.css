@@ -1,3 +1,17 @@
+:root {
+    --nav-background: #C0EEF2;
+    --black: #181823;
+    --blue: #537FE7;
+    --white: #E9F8F9;
+
+    --green: #25e84f;
+    --red: #fe0505;
+    --orange: #ff8b04;
+
+    --font-title: 'signo', sans-serif;  
+    --font-family: 'ministry', sans-serif;
+}
+
 .hidden {
     display: none;
 }
@@ -7,53 +21,61 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 5rem;
-    background-color: #C0EEF2;
+    height: 4rem;
+    background-color: var(--nav-background);
+}
+
+.container{
     display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #nav #logout_button {
-    color: red;
+    color: var(--red);
 }
 
 #nav #logout_button:hover {
-    color: #537FE7;
+    color: var(--blue);
 }
 
 #nav a {
-    color: #181823;
+    color: var(--black);
     display: flex;
     align-items: center;
-    font-family: 'signo', sans-serif;
+    font-family: var(--font-title);
     font-style: normal;
     font-weight: 700;
     font-size: 1.7rem;
     margin-left: 40px;
+    margin-right: 40px;
 }
 
 #nav a:hover {
-    color: #537FE7;
+    color: var(--blue);
 }
 
 .logo {
-    font-family: 'Pacifico';
-    font-size: 2rem;
-    color: #537FE7;
-    margin-right: 50px;
+    font-family: var(--font-title);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: var(--blue);
+    padding-top: 16px;
 }
 
 .logo:hover {
-    color: #E9F8F9;
+    color: var(--white);
 }
 
 body {
-    background-color: #181823;
-    color: #E9F8F9;
+    background-color: var(--black);
+    color: var(--white);
     margin-top: 5rem;
 }
 
 h1 {
-    font-family: 'signo', sans-serif;
+    font-family: var(--font-title);
     font-style: normal;
     font-weight: 700;
     font-size: 2.5rem;
@@ -64,15 +86,15 @@ h1 {
 
 a {
     text-decoration: none;
-    color: #537FE7;
+    color: var(--blue);
 }
 
 a:hover {
-    color: #C0EEF2;
+    color: var(--white);
 }
 
 p {
-    font-family: 'ministry', sans-serif;
+    font-family: var(--font-family);
     font-style: normal;
     font-weight: 100;
 }
@@ -83,16 +105,45 @@ p {
 }
 
 #Prompt_Form {
-    background-color: #537FE7;
+    background-color: var(--blue);
     padding: 10px;
     border-radius: 10px;
     width: 40%;
 }
 
 #Prompt_Filter {
-    background-color: #537FE7;
+    background-color: var(--blue);
     padding: 10px;
     margin-left: 5%;
     border-radius: 10px;
     width: 40%;
+}
+
+@media (max-width: 800px) {
+    .container{
+        display: none;
+    }
+}
+
+@media (min-width: 800px) and (max-width: 1200px) {
+    
+}
+
+@media (min-width: 1200px) {
+    body{
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .container{
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #nav a {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
 }
