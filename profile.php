@@ -15,14 +15,9 @@ $cloudinary = new Cloudinary(
     ]
 );
 
-$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-$offset = ($page - 1) * 10;
-$prompts = \PromptPlaza\Framework\Prompt::getAll($offset);
-$totalPrompts = \PromptPlaza\Framework\Prompt::countAll();
-$totalPages = ceil($totalPrompts / 10);
-
 $user_id = $_SESSION['user_id'];
 $user = \PromptPlaza\Framework\User::getById($user_id);
+$prompts = \PromptPlaza\Framework\Prompt::getAllPromptsFromUser($user_id);
 $profile_picture = $user['image'];
 
 if ($_SESSION['loggedin'] !== true) {
@@ -176,25 +171,6 @@ if (!empty($_POST)) {
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>
-    </div>
-
-    <!-- Teller om van pagina te veranderen voor volgende prompts te zien -->
-    <div class="pagination">
-        <?php if ($page > 1) : ?>
-            <a href="?page=<?php echo $page - 1; ?>">Previous</a>
-        <?php endif; ?>
-
-        <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
-            <?php if ($i === $page) : ?>
-                <span><?php echo $i; ?></span>
-            <?php else : ?>
-                <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-            <?php endif; ?>
-        <?php endfor; ?>
-
-        <?php if ($page < $totalPages) : ?>
-            <a href="?page=<?php echo $page + 1; ?>">Next</a>
-        <?php endif; ?>
     </div>
 </body>
 
