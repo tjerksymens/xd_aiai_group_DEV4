@@ -120,7 +120,7 @@ if (isset($_GET['details'])) {
                     <option value="1 credit">1 credit</option>
                     <option value="2 credits">2 credits</option>
                 </select>
-                <input type="submit" value="Filter" class="btn btn--primary">
+                <input type="submit" value="Filter" class="btn btn--primary btn--filter">
             </form>
             <?php
             if (isset($_GET['filter'])) {
@@ -175,7 +175,7 @@ if (isset($_GET['details'])) {
                 <!-- Toont comments -->
                 <div class="post_comments">
                     <div class="post_comments_form">
-                        <input type="text" placeholder="Place your comment here" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
+                        <input type="text" placeholder="Place your comment here" class="comment__field__prompt" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
                         <a href="#" class="btn_comments" data-id="<?php echo htmlspecialchars($prompt['id']) ?>">Add comment</a>
                     </div>
 

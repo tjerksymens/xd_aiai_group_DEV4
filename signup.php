@@ -79,7 +79,7 @@ if (!empty($_POST)) {
 </head>
 
 <body>
-	<div class="login">
+	<div class="signup">
 		<div class="form form__signup">
 			<form action="" method="post">
 				<h2 class="form__title" form__title>Sign Up</h2>

@@ -32,7 +32,7 @@ if (!empty($_POST)) {
 
 <body>
 	<div class="validate">
-		<div class="form form--validate">
+		<div class="form form__validate">
 			<form action="" method="post">
 				<h2 form__title>Validate</h2>
 				<p>Thank you for registering you're account to <strong>Promptplaza.</strong> <br>
@@ -55,7 +55,7 @@ if (!empty($_POST)) {
 					</div>
 				<?php else : ?>
 					<div class="form__field">
-						<label for="ValidationCode">validation code: </label>
+						<label for="ValidationCode" class="exception">validation code: </label>
 						<input type="text" name="validationcode">
 					</div>
 

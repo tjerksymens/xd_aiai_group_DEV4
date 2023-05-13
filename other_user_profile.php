@@ -26,11 +26,13 @@ if (!isset($_GET['username'])) {
     header('location: index.php');
 }
 
-$user = \PromptPlaza\Framework\User::getByUsername($_GET['username']);
+$user = \PromptPlaza\Framework\User::getById($_SESSION['user_id']);
 //ga naar eigen profiel als je op je eigen naam klikt
 if ($_GET['username'] == $user['username']) {
     header('location: profile.php');
 }
+
+$user = \PromptPlaza\Framework\User::getByUsername($_GET['username']);
 $profile_picture = $user['image'];
 
 ?>
@@ -104,7 +106,7 @@ $profile_picture = $user['image'];
                     <!-- Toont comments -->
                     <div class="post_comments">
                         <div class="post_comments_form">
-                            <input type="text" placeholder="Place here your comment" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
+                            <input type="text" placeholder="Place here your comment" class="comment__field__prompt" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
                             <a href="#" class="btn_comments" data-id="<?php echo htmlspecialchars($prompt['id']) ?>">Add comment</a>
                         </div>
 
