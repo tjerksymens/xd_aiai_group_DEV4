@@ -35,12 +35,6 @@ if (!empty($_POST)) {
             $prompt->setDetails($_POST['details']);
             $prompt->setUserId($_SESSION['user_id']);
             $prompt->save();
-
-            $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-            $offset = ($page - 1) * 10;
-            $prompts->getAll($offset);
-            $totalPrompts->countAll();
-            $totalPages = ceil($totalPrompts / 10);
         } catch (Throwable $e) {
             $error = $e->getMessage();
         }
@@ -85,13 +79,6 @@ if (isset($_GET['details'])) {
         <div id="Prompt_Form">
             <!-- Toont formulier om prompt toe te voegen -->
             <form action="" method="post" enctype="multipart/form-data">
-                <?php if (isset($error)) : ?>
-                    <div class="form__error">
-                        <p>
-                            <?php echo $error; ?>
-                        </p>
-                    </div>
-                <?php endif; ?>
                 <div class="form__field">
                     <label for="prompt">Prompt</label>
                     <input type="text" name="prompt">
@@ -116,6 +103,13 @@ if (isset($_GET['details'])) {
                     <input type="submit" value="Add" class="btn btn--primary">
                 </div>
             </form>
+            <?php if (isset($error)) : ?>
+                <div class="form__error">
+                    <p class="error">
+                        <?php echo $error; ?>
+                    </p>
+                </div>
+            <?php endif; ?>
         </div>
         <div id="Prompt_Filter">
             <!-- Toont filter op prijs -->
@@ -148,25 +142,35 @@ if (isset($_GET['details'])) {
     <div class="prompts">
         <?php foreach ($prompts as $prompt) : ?>
             <div class="prompt">
-                <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
-                <p><?php echo "prompt: " . htmlspecialchars($prompt['prompt']); ?></p>
+                <strong id="Prompt__Creator__Head">Made by: <a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
+                <h2><?php echo "prompt: " . htmlspecialchars($prompt['prompt']); ?></h2>
                 <img src="<?php echo $cloudinary->image($prompt['image'])->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="prompt image">
-                <p><?php echo "price: " . htmlspecialchars($prompt['price']); ?></p>
-                <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
-
-                <!-- Toont likes-->
-                <div>
-                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like" id="like<?php echo htmlspecialchars($prompt['id']) ?>">Like</a>
-                    <span class='likes' id="likes<?php echo htmlspecialchars($prompt['id']) ?>"><?php echo $prompts = \PromptPlaza\Framework\Prompt::getLikes($prompt['id']); ?></span>
-                    <span class="status"></span>
-                    people like this
+                <div id="Prompt__Details">
+                    <?php if ($prompt['price'] == 1) : ?>
+                        <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credit"; ?></p>
+                    <?php else : ?>
+                        <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credits"; ?></p>
+                    <?php endif; ?>
+                    <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
                 </div>
 
-                <!-- Toont add to favourite -->
-                <div>
-                    <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite" id="favourite<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
-                </div>
+                <div id="Prompt__LikeFavourite">
+                    <!-- Toont likes-->
+                    <div>
+                        <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like" id="like<?php echo htmlspecialchars($prompt['id']) ?>">Like</a>
+                        <span class='likes' id="likes<?php echo htmlspecialchars($prompt['id']) ?>"><?php echo $prompts = \PromptPlaza\Framework\Prompt::getLikes($prompt['id']); ?></span>
+                        <?php if ($prompts !== 1) : ?>
+                            <span class="status">people like this</span>
+                        <?php else : ?>
+                            <span class="status">person likes this</span>
+                        <?php endif; ?>
+                    </div>
 
+                    <!-- Toont add to favourite -->
+                    <div>
+                        <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite" id="favourite<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
+                    </div>
+                </div>
 
                 <!-- Toont comments -->
                 <div class="post_comments">

@@ -119,6 +119,59 @@ p {
     width: 40%;
 }
 
+.form__error {
+    color: var(--red);
+}
+
+.prompts {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px; /* Adjust the gap between items as needed */
+}
+
+.prompt {
+    background-color: var(--blue);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    min-width: 100px;
+    justify-content: center;
+}
+
+.prompt a {
+    color: var(--white);
+}
+
+.prompt a:hover {
+    color: var(--nav-background);
+}
+
+.prompt img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+#Prompt__Creator__Head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#Prompt__Details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#Prompt__LikeFavourite {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
 @media (max-width: 800px) {
     .container{
         display: none;

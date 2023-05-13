@@ -131,34 +131,40 @@ if (!empty($_POST)) {
         <?php foreach ($prompts as $prompt) : ?>
             <?php if ($prompt['username'] == $user['username']) : ?>
                 <div class="prompt">
-                    <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
-                    <p><?php echo "prompt: " . htmlspecialchars($prompt['prompt']); ?></p>
+                    <strong id="Prompt__Creator__Head">Made by: <a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
+                    <h2><?php echo "prompt: " . htmlspecialchars($prompt['prompt']); ?></h2>
                     <img src="<?php echo $cloudinary->image($prompt['image'])->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="prompt image">
-                    <p><?php echo "price: " . htmlspecialchars($prompt['price']); ?></p>
-                    <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
-                    <form action="" method="post">
-                        <button type="submit" name="delete_prompt">Delete Prompt</button>
-                        <input type="hidden" name="prompt_id" value="<?php echo htmlspecialchars($prompt['id']) ?>">
-                    </form>
-
-                    <!-- Toont likes-->
-                    <div>
-                        <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like">Like</a>
-                        <span class='likes' id="likes<?php echo htmlspecialchars($prompt['id']) ?>"><?php echo $prompts = \PromptPlaza\Framework\Prompt::getLikes($prompt['id']); ?></span>
-                        <span class="status"></span>
-                        people like this
+                    <div id="Prompt__Details">
+                        <?php if ($prompt['price'] == 1) : ?>
+                            <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credit"; ?></p>
+                        <?php else : ?>
+                            <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credits"; ?></p>
+                        <?php endif; ?>
+                        <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
                     </div>
 
-                    <!-- Toont add to favourite -->
-                    <div>
-                        <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite_add" id="favourite_add<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
-                    </div>
+                    <div id="Prompt__LikeFavourite">
+                        <!-- Toont likes-->
+                        <div>
+                            <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like" id="like<?php echo htmlspecialchars($prompt['id']) ?>">Like</a>
+                            <span class='likes' id="likes<?php echo htmlspecialchars($prompt['id']) ?>"><?php echo $prompts = \PromptPlaza\Framework\Prompt::getLikes($prompt['id']); ?></span>
+                            <?php if ($prompts !== 1) : ?>
+                                <span class="status">people like this</span>
+                            <?php else : ?>
+                                <span class="status">person likes this</span>
+                            <?php endif; ?>
+                        </div>
 
+                        <!-- Toont add to favourite -->
+                        <div>
+                            <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite" id="favourite<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
+                        </div>
+                    </div>
 
                     <!-- Toont comments -->
                     <div class="post_comments">
                         <div class="post_comments_form">
-                            <input type="text" placeholder="Place here your comment" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
+                            <input type="text" placeholder="Place your comment here" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
                             <a href="#" class="btn_comments" data-id="<?php echo htmlspecialchars($prompt['id']) ?>">Add comment</a>
                         </div>
 
@@ -172,7 +178,6 @@ if (!empty($_POST)) {
                             <?php endforeach; ?>
                         </ul>
                     </div>
-
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>

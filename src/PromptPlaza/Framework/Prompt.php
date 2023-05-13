@@ -178,7 +178,7 @@ class Prompt
     {
         $conn = Db::getConnection();
         $statement = $conn->prepare("
-        SELECT favourites.*, prompts.*, users.firstname, users.lastname 
+        SELECT favourites.*, prompts.*, users.firstname, users.lastname, users.username
         FROM favourites
         JOIN prompts ON favourites.prompt_id = prompts.id 
         JOIN users ON favourites.user_id = users.id 
