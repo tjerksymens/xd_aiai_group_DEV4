@@ -39,9 +39,9 @@ if (!empty($_POST)) {
 
 <body>
 	<div class="login">
-		<div class="form form--login">
+		<div class="form form__login">
 			<form action="" method="post">
-				<h2 form__title>Login</h2>
+				<h2 form__title class="form__login__title">Login</h2>
 
 				<?php if (isset($error)) : ?>
 					<div class="form__error">
@@ -64,12 +64,12 @@ if (!empty($_POST)) {
 					<input type="submit" value="Login" class="btn btn--primary">
 				</div>
 			</form>
+			<div class="form__login__links">
+				<a href="signup.php">Sign Up Here</a>
+				<br>
+				<a href="forgot_password.php">Forgot My Password</a>
+			</div>
 		</div>
-	</div>
-	<div>
-		<a href="signup.php">Sign Up Here</a>
-		<br>
-		<a href="forgot_password.php">Forgot My Password</a>
 	</div>
 </body>
 

@@ -80,9 +80,9 @@ if (!empty($_POST)) {
 
 <body>
 	<div class="login">
-		<div class="form form--login">
+		<div class="form form__signup">
 			<form action="" method="post">
-				<h2 form__title>Sign Up</h2>
+				<h2 class="form__title" form__title>Sign Up</h2>
 
 				<?php if (isset($error)) : ?>
 					<div class="form__error">
@@ -120,11 +120,11 @@ if (!empty($_POST)) {
 					<input type="submit" value="Sign Up" class="btn btn--primary">
 				</div>
 			</form>
+			<div class="form__signup__links">
+				<p>Already have an account?</p>
+				<a href="login.php">Log in here</a>
+			</div>
 		</div>
-	</div>
-	<div>
-		<p>Already have an account?</p>
-		<a href="login.php">Log in here</a>
 	</div>
 </body>
 

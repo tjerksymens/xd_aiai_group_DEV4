@@ -12,60 +12,15 @@
     --font-family: 'ministry', sans-serif;
 }
 
+/*Algemeen*/
 .hidden {
     display: none;
-}
-
-#nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4rem;
-    background-color: var(--nav-background);
 }
 
 .container{
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-#nav #logout_button {
-    color: var(--red);
-}
-
-#nav #logout_button:hover {
-    color: var(--blue);
-}
-
-#nav a {
-    color: var(--black);
-    display: flex;
-    align-items: center;
-    font-family: var(--font-title);
-    font-style: normal;
-    font-weight: 700;
-    font-size: 1.7rem;
-    margin-left: 40px;
-    margin-right: 40px;
-}
-
-#nav a:hover {
-    color: var(--blue);
-}
-
-.logo {
-    font-family: var(--font-title);
-    font-style: normal;
-    font-weight: 700;
-    font-size: 1.7rem;
-    color: var(--blue);
-    padding-top: 16px;
-}
-
-.logo:hover {
-    color: var(--white);
 }
 
 body {
@@ -99,6 +54,175 @@ p {
     font-weight: 100;
 }
 
+/*Navigation*/
+#nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4rem;
+    background-color: var(--nav-background);
+}
+
+#nav #logout_button {
+    color: var(--red);
+}
+
+#nav #logout_button:hover {
+    color: var(--blue);
+}
+
+#nav a {
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    font-family: var(--font-title);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.7rem;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+#nav a:hover {
+    color: var(--blue);
+}
+
+    /*Logo (is included in Nav)*/
+    .logo {
+        font-family: var(--font-title);
+        font-style: normal;
+        font-weight: 700;
+        font-size: 1.7rem;
+        color: var(--blue);
+        padding-top: 16px;
+    }
+
+    .logo:hover {
+        color: var(--white);
+    }
+
+/*Form Styling*/
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form__error {
+    color: var(--red);
+    text-align: center;
+}
+
+input[type="text"] {
+    background-color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    color: var(--black);
+    font-family: var(--font-family);
+    font-style: normal;
+    font-weight: 100;
+    font-size: 1rem;
+}
+
+input[type="password"] {
+    background-color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    color: var(--black);
+    font-family: var(--font-family);
+    font-style: normal;
+    font-weight: 100;
+    font-size: 1rem;
+}
+
+.btn--primary {
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+    border-radius: 15px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-family);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.btn--primary:hover {
+    background-color: var(--white);
+    color: var(--green);
+}
+
+.form__field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    width: 300px;
+}
+
+/*Form Styling Login and Signup*/
+.form__login, .form__signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5rem;
+    background-color: var(--blue);
+    width: 30%;
+    padding: 4rem 5rem 5rem 5rem;
+    border-radius: 40px;
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form__login__title, .form__title {
+    font-family: var(--font-title);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.form__login__links {
+    text-align: center;
+}
+
+.form__login__links a, .form__signup__links a {
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;;
+    height: 30px;
+    width: 150px;
+    border: 1px solid var(--white);
+    border-radius: 15px;
+}
+
+.form__login__links a:hover, .form__signup__links a:hover {
+    color: var(--green);
+    border: 1px solid var(--green);
+}
+
+.form__signup__links {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.form__signup__links p {
+    text-align: center;
+}
+
+/*Prompt forms and filters*/
 #Homepage_Prompt_Forms {
     display: flex;
     justify-content: center;
@@ -119,10 +243,7 @@ p {
     width: 40%;
 }
 
-.form__error {
-    color: var(--red);
-}
-
+/*Prompts*/
 .prompts {
     margin-top: 40px;
     display: grid;
@@ -159,30 +280,45 @@ p {
     align-items: center;
 }
 
-#Prompt__Details {
+#Prompt__Details, #Prompt__LikeFavourite {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 #Prompt__LikeFavourite {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 5px;
 }
 
 @media (max-width: 800px) {
+    /*Algemeen*/
     .container{
         display: none;
+    }
+
+    /*Login and Signup*/
+    .form__login {
+        width: 60%;
+    }
+
+    .form__signup {
+        width: 60%;
     }
 }
 
 @media (min-width: 800px) and (max-width: 1200px) {
-    
+    /*Login and Signup*/
+    .form__login {
+        width: 40%;
+    }
+
+    .form__signup {
+        width: 40%;
+    }
 }
 
 @media (min-width: 1200px) {
+    /*Algemeen*/
     body{
         max-width: 1200px;
         margin-left: auto;
@@ -195,6 +331,7 @@ p {
         margin-right: auto;
     }
 
+    /*Navigation*/
     #nav a {
         margin-left: 0px;
         margin-right: 0px;
