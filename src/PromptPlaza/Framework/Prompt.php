@@ -125,7 +125,7 @@ class Prompt
         $conn = Db::getConnection();
         $statement = $conn->prepare(
             "
-            SELECT prompts.*, users.firstname, users.lastname 
+            SELECT prompts.*, users.firstname, users.lastname, users.username
             FROM prompts 
             JOIN users ON prompts.user_id = users.id 
             WHERE prompts.price LIKE :filter 
@@ -141,7 +141,7 @@ class Prompt
         $conn = Db::getConnection();
         $statement = $conn->prepare(
             "
-            SELECT prompts.*, users.firstname, users.lastname 
+            SELECT prompts.*, users.firstname, users.lastname, users.username
             FROM prompts 
             JOIN users ON prompts.user_id = users.id 
             WHERE prompts.details LIKE :details 
