@@ -189,6 +189,21 @@ class Prompt
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    //get all prompts from user
+    public static function getAllPromptsFromUser($userId)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("
+        SELECT prompts.*, users.firstname, users.lastname, users.username
+        FROM prompts
+        JOIN users ON prompts.user_id = users.id 
+        WHERE prompts.user_id = :userId
+        ORDER BY prompts.id DESC");
+        $statement->bindValue(":userId", $userId);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     //get all liked
     public static function getAllLiked($userId)
     {
