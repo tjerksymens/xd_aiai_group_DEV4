@@ -286,14 +286,6 @@ input[type="text"], input[type="password"], select {
     text-align: left;
 }
 
-/*Prompts*/
-.prompts {
-    margin-top: 40px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px; /* Adjust the gap between items as needed */
-}
-
 .prompt {
     background-color: var(--blue);
     padding: 10px;
@@ -313,7 +305,7 @@ input[type="text"], input[type="password"], select {
 
 .prompt img {
     width: 100%;
-    height: 200px;
+    height: auto;
     object-fit: cover;
 }
 
@@ -366,6 +358,8 @@ input[type="text"], input[type="password"], select {
     .form__signup {
         width: 60%;
     }
+
+    
 }
 
 @media (min-width: 800px) and (max-width: 1200px) {
@@ -376,6 +370,12 @@ input[type="text"], input[type="password"], select {
 
     .form__signup {
         width: 40%;
+    }
+    .prompts {
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px; /* Adjust the gap between items as needed */
     }
 }
 
@@ -397,5 +397,13 @@ input[type="text"], input[type="password"], select {
     #nav a {
         margin-left: 0px;
         margin-right: 0px;
+    }
+
+    /*Prompts*/
+    .prompts {
+        margin-top: 40px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 10px; /* Adjust the gap between items as needed */
     }
 }
