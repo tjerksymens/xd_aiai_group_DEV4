@@ -108,6 +108,7 @@ class Prompt
         return $statement->fetchColumn();
     }
 
+    //plaatst een prompt in de database
     public function save()
     {
         $conn = Db::getConnection();
@@ -152,6 +153,7 @@ class Prompt
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    //haalt het aantal likes uit de database
     public static function getLikes($id)
     {
         $conn = Db::getConnection();
