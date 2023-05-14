@@ -375,4 +375,15 @@ class User
         $statement->bindValue(":id", $id);
         return $statement->execute();
     }
+
+    public static function getCredits($user_id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT credits FROM users WHERE id = :id");
+        $statement->bindValue(":id", $user_id);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return array('credits' => ($result['credits'] !== null) ? $result['credits'] : 0);
+    }
 }

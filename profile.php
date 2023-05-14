@@ -17,6 +17,7 @@ $cloudinary = new Cloudinary(
 
 $user_id = $_SESSION['user_id'];
 $user = \PromptPlaza\Framework\User::getById($user_id);
+$credits = \PromptPlaza\Framework\User::getCredits($user_id);
 $prompts = \PromptPlaza\Framework\Prompt::getAllPromptsFromUser($user_id);
 $profile_picture = $user['image'];
 
@@ -111,6 +112,11 @@ if (!empty($_POST)) {
     <form action="" method="post">
         <button type="submit" name="delete_account">Delete Account</button>
     </form>
+
+    <div class="credits">
+        <h2>Your credits</h2>
+        <p><?php echo htmlspecialchars($credits['credits']); ?> credits</p>
+    </div>
 
     <h2>Your prompts</h2>
 
