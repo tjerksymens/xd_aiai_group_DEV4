@@ -343,6 +343,22 @@ input[type="text"], input[type="password"], select {
     margin-bottom: 0.8rem;
 }
 
+/*Follow button (other user profile)*/
+.follow__button {
+    background-color: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: 15px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-family);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    min-width: 200px;
+}
+
 @media (max-width: 820px) {
     /*Algemeen*/
     .container{

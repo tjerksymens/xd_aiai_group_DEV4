@@ -32,6 +32,24 @@ if ($_GET['username'] == $user['username']) {
     header('location: profile.php');
 }
 
+//follow toevoegen of verwijderen
+if (!empty($_POST)) {
+    $follow = new \PromptPlaza\Framework\Follow();
+    $follow->setUserId($_SESSION['user_id']);
+    $followedId = \PromptPlaza\Framework\User::getByUsername($_GET['username']);
+    $follow->setFollowedId($followedId['id']);
+    $follow->save();
+}
+
+//check of je deze user al volgt
+$follow = new \PromptPlaza\Framework\Follow();
+$followedId = \PromptPlaza\Framework\User::getByUsername($_GET['username']);
+if ($follow->checkIfFollowing($_SESSION['user_id'], $followedId['id']) == true) {
+    $followed = true;
+} else {
+    $followed = false;
+}
+
 $user = \PromptPlaza\Framework\User::getByUsername($_GET['username']);
 $profile_picture = $user['image'];
 
@@ -69,7 +87,15 @@ $profile_picture = $user['image'];
         </div>
     <?php endif; ?>
 
-    <h2>Prompts by this user</h2>
+    <?php if ($followed == true) : ?>
+        <form action="" method="post">
+            <button type="submit" name="follow" class="follow__button">Unfollow</button>
+        </form>
+    <?php else : ?>
+        <form action="" method="post">
+            <button type="submit" name="follow" class="follow__button">Follow</button>
+        </form>
+    <?php endif; ?>
 
     <!-- Toont zoeken op details -->
     <form action="" method="get">
@@ -77,6 +103,8 @@ $profile_picture = $user['image'];
         <input type="text" name="details">
         <input type="submit" value="Browse" class="btn btn--primary">
     </form>
+
+    <h2>Prompts by this user</h2>
 
     <!-- Toont prompts -->
     <div class="prompts">
