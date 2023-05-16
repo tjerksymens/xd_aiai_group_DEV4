@@ -39,7 +39,7 @@ if (!empty($_POST)) {
 			$recipientEmail = $_POST['email'];
 			$nameEmail = $_POST['firstname'] . ' ' . $_POST['lastname'];
 			$firstnameEmail = $_POST['firstname'];
-			
+
 			$validation_link = "https://promptplaza.azurewebsites.net/validate.php";
 			$email = new \SendGrid\Mail\Mail(); // create new email
 			$email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
@@ -53,9 +53,7 @@ if (!empty($_POST)) {
 			$sendgrid = new \SendGrid($apiKey);
 			try { // try to send email
 				$response = $sendgrid->send($email);
-				print $response->statusCode() . "\n";
-				print_r($response->headers());
-				print $response->body() . "\n";
+				$responseData = $response;
 			} catch (Exception $e) { // if email could not be sent, print error
 				echo 'Caught exception: ' . $e->getMessage() . "\n";
 			}
