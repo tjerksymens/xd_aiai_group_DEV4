@@ -162,18 +162,12 @@ input[type="text"], input[type="password"], select {
 
 /*Form Styling Login, Signup and Validate*/
 .form__login, .form__signup, .form__validate {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-top: 5rem;
+    margin-left: auto;
+    margin-right: auto;
     background-color: var(--blue);
-    position: fixed;
     width: 30%;
     border-radius: 40px;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    margin-top: -4rem;
 }
 
 .form__login {
