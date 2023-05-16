@@ -39,15 +39,16 @@ if (!empty($_POST)) {
 			$recipientEmail = $_POST['email'];
 			$nameEmail = $_POST['firstname'] . ' ' . $_POST['lastname'];
 			$firstnameEmail = $_POST['firstname'];
-
+			
+			$validation_link = "https://promptplaza.azurewebsites.net/validate.php";
 			$email = new \SendGrid\Mail\Mail(); // create new email
 			$email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
 			$email->setSubject("Welcome to Promptplaza! Verify your email here."); // set subject
 			$email->addTo($_POST['email'], $nameEmail); // set recipient
-			$email->addContent("text/plain", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong>"); //set title
+			$email->addContent("text/plain", "Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong> <br> <br> <a href=$validation_link>Validate here</a>"); //set title
 			$email->addContent(
 				"text/html",
-				"Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong>"
+				"Welcome to Promptplaza $firstnameEmail! Here is your activation code: <strong>$validation_code</strong> <br> <br> <a href=$validation_link>Validate here</a> 	"
 			); //set text
 			$sendgrid = new \SendGrid($apiKey);
 			try { // try to send email
