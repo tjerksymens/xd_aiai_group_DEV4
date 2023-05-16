@@ -1,6 +1,7 @@
 <?php
 include_once(__DIR__ . "/bootstrap.php");
 $config = parse_ini_file("config/config.ini");
+$apiKey = $config['SENDGRID_API_KEY'];
 
 //session login check
 if ($_SESSION['loggedin'] !== true) {
@@ -64,6 +65,32 @@ if (isset($_POST['buy_prompt'])) {
             $buy->setPromptId($promptId);
             $buy->setUserId($_SESSION['user_id']);
             $buy->save(); 
+
+            $user = \PromptPlaza\Framework\User::getById($_SESSION['user_id']);
+            $fullname = $user['firstname'] . " " . $user['lastname'];
+            $firstname = $user['firstname'];
+            $title = $prompt['prompt'];
+            //zend mail met de prompt
+            $email = new \SendGrid\Mail\Mail(); // create new email
+			$email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
+			$email->setSubject("Here is your prompt"); // set subject
+			$email->addTo($user['email'], $fullname); // set recipient
+			$email->addContent("text/plain", "Hey $firstname! Thank you for your purchase! <br> 
+                Here is your new prompt: <strong>$title</strong> <br> <br> We hope you will have fun with it and come back for more prompts at Promtplaza."); 
+			$email->addContent(
+				"text/html",
+				"Hey $firstname! Thank you for your purchase! <br> 
+                Here is your new prompt: <strong>$title</strong> <br> <br> We hope you will have fun with it and come back for more prompts at Promtplaza."
+			); //set text
+			$sendgrid = new \SendGrid($apiKey);
+			try { // try to send email
+				$response = $sendgrid->send($email);
+				print $response->statusCode() . "\n";
+				print_r($response->headers());
+				print $response->body() . "\n";
+			} catch (Exception $e) { // if email could not be sent, print error
+				echo 'Caught exception: ' . $e->getMessage() . "\n";
+			}
         }
     }
 }

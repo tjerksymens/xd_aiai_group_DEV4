@@ -46,7 +46,7 @@ class Bought
             $statement->execute();
 
             //mail sturen hier
-            //toekoomst ook gekochte prompts weergeven op profiel
+            //toekomst ook gekochte prompts weergeven op profiel
         } else {
             $statement = $conn->prepare("DELETE FROM bought_prompts WHERE user_id = :userid AND prompt_id = :promptid");
             $statement->bindValue(":userid", $this->getUserId());
