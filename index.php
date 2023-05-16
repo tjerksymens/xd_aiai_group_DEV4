@@ -21,7 +21,7 @@ $cloudinary = new Cloudinary(
 );
 
 //prompt toevoegen
-if (!empty($_POST)) {
+if (!empty($_POST['image'])) {
     //img upload en check
     if (isset($_FILES['image'])) {
         try {
@@ -40,6 +40,31 @@ if (!empty($_POST)) {
         }
     } else {
         $error = "No image selected.";
+    }
+}
+
+//checken of dit mijn prompt is
+//buy this prompt
+if (isset($_POST['buy_prompt'])) {
+    $price = \PromptPlaza\Framework\Prompt::getPriceById($_POST['buy_prompt']);
+    $credits = \PromptPlaza\Framework\User::getCredits($_SESSION['user_id']);
+    $prompt = \PromptPlaza\Framework\Prompt::getById($_POST['buy_prompt']);
+    if ($prompt['user_id'] == $_SESSION['user_id']) {
+        $error = "You own this prompt.";
+    } else {
+        if ($credits < $price) {
+            $error = "You don't have enough credits to buy this prompt.";
+        } else {
+            //credits updaten
+            $user = \PromptPlaza\Framework\User::updateCreditsById($_SESSION['user_id'], $price['price']);
+            
+            //prompt kopen
+            $promptId = $_POST['buy_prompt'];
+            $buy = new \PromptPlaza\Framework\Bought();
+            $buy->setPromptId($promptId);
+            $buy->setUserId($_SESSION['user_id']);
+            $buy->save(); 
+        }
     }
 }
 
@@ -150,6 +175,13 @@ if (isset($_GET['details'])) {
                         <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credit"; ?></p>
                     <?php else : ?>
                         <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credits"; ?></p>
+                    <?php endif; ?>
+                    <?php if (!$showBuyButton = \PromptPlaza\Framework\Bought::checkIfBought($_SESSION['user_id'], $prompt['id'])) : ?>
+                        <form action="" method="post">
+                            <button type="submit" name="buy_prompt" value="<?php echo htmlspecialchars($prompt['id']) ?>">Buy</button>
+                        </form>
+                    <?php else : ?>
+                        <p>Owned</p>
                     <?php endif; ?>
                     <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
                 </div>

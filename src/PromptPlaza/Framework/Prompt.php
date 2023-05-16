@@ -99,6 +99,15 @@ class Prompt
         }
     }
 
+    public static function getById($id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT * FROM prompts WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
     //telt alle prompts en geeft het aantal terug
     public static function countAll()
     {
@@ -240,5 +249,15 @@ class Prompt
         $statement = $conn->prepare("DELETE FROM prompts WHERE id = :promptId");
         $statement->bindValue(":promptId", $promptId);
         $statement->execute();
+    }
+
+    //load prompt price
+    public static function getPriceById($promptId)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT price FROM prompts WHERE id = :promptId");
+        $statement->bindValue(":promptId", $promptId);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 }

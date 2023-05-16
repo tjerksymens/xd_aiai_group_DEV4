@@ -386,4 +386,13 @@ class User
 
         return array('credits' => ($result['credits'] !== null) ? $result['credits'] : 0);
     }
+
+    public static function updateCreditsById($user_id, $price)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("UPDATE users SET credits = credits - :price WHERE id = :id");
+        $statement->bindValue(":price", $price);
+        $statement->bindValue(":id", $user_id);
+        return $statement->execute();
+    }
 }
