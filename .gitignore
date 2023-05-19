@@ -1,3 +1,4 @@
 config/
 sendgrid.env
 vendor/
+config/config.ini
