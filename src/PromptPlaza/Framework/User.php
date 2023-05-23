@@ -77,7 +77,7 @@ class User
 
     public function setPassword($password)
     {
-        if (strlen($password) < 8) {
+        if (strlen($password) < 6) {
             throw new \Exception("Password must be at least 8 characters.");
         } else {
             $options = [
