@@ -18,15 +18,16 @@ $cloudinary = new Cloudinary(
 $user_id = $_SESSION['user_id'];
 $user = \PromptPlaza\Framework\User::getById($user_id);
 $credits = \PromptPlaza\Framework\User::getCredits($user_id);
-$prompts = \PromptPlaza\Framework\Prompt::getAllPromptsFromUser($user_id);
 $profile_picture = $user['image'];
+
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+$offset = ($page - 1) * 10;
+$prompts = \PromptPlaza\Framework\Prompt::getAll($offset);
+$totalPrompts = \PromptPlaza\Framework\Prompt::countAll();
+$totalPages = ceil($totalPrompts / 10);
 
 if ($_SESSION['loggedin'] !== true) {
     header("Location: login.php");
-}
-
-if ($user['moderator'] == 1) {
-    header("Location: moderator_profile.php");
 }
 
 if (!empty($_POST)) {
@@ -57,6 +58,16 @@ if (!empty($_POST)) {
 
     if (isset($_POST['reset_password'])) {
         header("Location: reset_password.php");
+    }
+
+    if (isset($_POST['approve_prompt'])) {
+        $prompt_id = $_POST['prompt_id'];
+        $prompt = \PromptPlaza\Framework\Prompt::approve($prompt_id);
+    }
+
+    if (isset($_POST['delete_prompt'])) {
+        $prompt_id = $_POST['prompt_id'];
+        $prompt = \PromptPlaza\Framework\Prompt::deletePrompt($prompt_id);
     }
 }
 
@@ -117,11 +128,11 @@ if (!empty($_POST)) {
         <p><?php echo htmlspecialchars($credits['credits']); ?> credits</p>
     </div>
 
-    <h2>Your prompts</h2>
+    <h2>Unapproved prompts</h2>
 
     <!-- Toont zoeken op details -->
     <form action="" method="get">
-        <label for="details">Browse unapproved prompts by details</label>
+        <label for="details">Browse your prompts by details</label>
         <input type="text" name="details">
         <input type="submit" value="Browse" class="btn btn--primary">
     </form>
@@ -129,7 +140,7 @@ if (!empty($_POST)) {
     <!-- Toont prompts -->
     <div class="prompts">
         <?php foreach ($prompts as $prompt) : ?>
-            <?php if ($prompt['username'] == $user['username']) : ?>
+            <?php if ($prompt['approved'] === 0) : ?>
                 <div class="prompt">
                     <strong id="Prompt__Creator__Head">Made by: <a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
                     <h2><?php echo "prompt: " . htmlspecialchars($prompt['prompt']); ?></h2>
@@ -143,40 +154,13 @@ if (!empty($_POST)) {
                         <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
                     </div>
 
-                    <div id="Prompt__LikeFavourite">
-                        <!-- Toont likes-->
-                        <div>
-                            <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like" id="like<?php echo htmlspecialchars($prompt['id']) ?>">Like</a>
-                            <span class='likes' id="likes<?php echo htmlspecialchars($prompt['id']) ?>"><?php echo $prompts = \PromptPlaza\Framework\Prompt::getLikes($prompt['id']); ?></span>
-                            <?php if ($prompts !== 1) : ?>
-                                <span class="status">people like this</span>
-                            <?php else : ?>
-                                <span class="status">person likes this</span>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Toont add to favourite -->
-                        <div>
-                            <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite" id="favourite<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
-                        </div>
-                    </div>
-
-                    <!-- Toont comments -->
-                    <div class="post_comments">
-                        <div class="post_comments_form">
-                            <input type="text" placeholder="Place your comment here" class="comment__field__prompt" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
-                            <a href="#" class="btn_comments" data-id="<?php echo htmlspecialchars($prompt['id']) ?>">Add comment</a>
-                        </div>
-
-                        <ul class="post_comments_list<?php echo htmlspecialchars($prompt['id']) ?>">
-                            <?php $allComments = \PromptPlaza\Framework\Comment::getComments($prompt['id']);
-                            foreach ($allComments as $c) : ?>
-                                <li>
-                                    <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($c['username']); ?>"><?php echo htmlspecialchars($c['username']); ?></a></strong>
-                                    <?php echo $c['text']; ?>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
+                    <!-- Toont approve en delete prompt -->
+                    <div id="Prompt__ApproveDelete">
+                        <form action="" method="post">
+                            <input type="hidden" name="prompt_id" value="<?php echo htmlspecialchars($prompt['id']) ?>">
+                            <input type="submit" value="Approve" class="btn btn--primary" name="approve_prompt">
+                            <input type="submit" value="Delete" class="btn btn--primary" name="delete_prompt">
+                        </form>
                     </div>
                 </div>
             <?php endif; ?>

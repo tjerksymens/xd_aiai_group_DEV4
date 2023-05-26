@@ -130,6 +130,24 @@ class Prompt
         return $statement->execute();
     }
 
+    //approved de prompt
+    public static function approve($id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("UPDATE prompts SET approved = 1 WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        return $statement->execute();
+    }
+
+    //disapproved de prompt
+    public static function disapprove($id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("DELETE FROM prompts WHERE id = :id");
+        $statement->bindValue(":id", $id);
+        return $statement->execute();
+    }
+
     public static function getFiltered($filter)
     {
         $conn = Db::getConnection();

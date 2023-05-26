@@ -4,16 +4,16 @@ namespace PromptPlaza\Framework;
 
 class User
 {
-    private string $email;
-    private string $username;
-    private string $firstname;
-    private string $lastname;
-    private string $password;
+    protected string $email;
+    protected string $username;
+    protected string $firstname;
+    protected string $lastname;
+    protected string $password;
     private string $confirmpassword;
     private string $validationcode;
     private string $validated;
-    private string $image;
-
+    protected string $image;
+    protected string $isModerator;
 
     public function setEmail($email)
     {
@@ -394,5 +394,20 @@ class User
         $statement->bindValue(":price", $price);
         $statement->bindValue(":id", $user_id);
         return $statement->execute();
+    }
+
+    public static function checkIfModerator($user_id)
+    {
+        $conn = Db::getConnection();
+        $statement = $conn->prepare("SELECT moderator FROM users WHERE id = :id");
+        $statement->bindValue(":id", $user_id);
+        $statement->execute();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if ($result['Moderator'] == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
