@@ -63,13 +63,13 @@ if (isset($_POST['buy_prompt'])) {
         } else {
             //credits updaten
             $user = \PromptPlaza\Framework\User::updateCreditsById($_SESSION['user_id'], $price['price']);
-            
+
             //prompt kopen
             $promptId = $_POST['buy_prompt'];
             $buy = new \PromptPlaza\Framework\Bought();
             $buy->setPromptId($promptId);
             $buy->setUserId($_SESSION['user_id']);
-            $buy->save(); 
+            $buy->save();
 
             $user = \PromptPlaza\Framework\User::getById($_SESSION['user_id']);
             $fullname = $user['firstname'] . " " . $user['lastname'];
@@ -77,25 +77,25 @@ if (isset($_POST['buy_prompt'])) {
             $title = $prompt['prompt'];
             //zend mail met de prompt
             $email = new \SendGrid\Mail\Mail(); // create new email
-			$email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
-			$email->setSubject("Here is your prompt"); // set subject
-			$email->addTo($user['email'], $fullname); // set recipient
-			$email->addContent("text/plain", "Hey $firstname! Thank you for your purchase! <br> 
-                Here is your new prompt: <strong>$title</strong> <br> <br> We hope you will have fun with it and come back for more prompts at Promtplaza."); 
-			$email->addContent(
-				"text/html",
-				"Hey $firstname! Thank you for your purchase! <br> 
+            $email->setFrom("promptplaza@hotmail.com", "Wouter From Promptplaza"); // set sender
+            $email->setSubject("Here is your prompt"); // set subject
+            $email->addTo($user['email'], $fullname); // set recipient
+            $email->addContent("text/plain", "Hey $firstname! Thank you for your purchase! <br> 
+                Here is your new prompt: <strong>$title</strong> <br> <br> We hope you will have fun with it and come back for more prompts at Promtplaza.");
+            $email->addContent(
+                "text/html",
+                "Hey $firstname! Thank you for your purchase! <br> 
                 Here is your new prompt: <strong>$title</strong> <br> <br> We hope you will have fun with it and come back for more prompts at Promtplaza."
-			); //set text
-			$sendgrid = new \SendGrid($apiKey);
-			try { // try to send email
-				$response = $sendgrid->send($email);
-				print $response->statusCode() . "\n";
-				print_r($response->headers());
-				print $response->body() . "\n";
-			} catch (Exception $e) { // if email could not be sent, print error
-				echo 'Caught exception: ' . $e->getMessage() . "\n";
-			}
+            ); //set text
+            $sendgrid = new \SendGrid($apiKey);
+            try { // try to send email
+                $response = $sendgrid->send($email);
+                print $response->statusCode() . "\n";
+                print_r($response->headers());
+                print $response->body() . "\n";
+            } catch (Exception $e) { // if email could not be sent, print error
+                echo 'Caught exception: ' . $e->getMessage() . "\n";
+            }
         }
     }
 }
@@ -120,7 +120,7 @@ $profile_picture = $user['image'];
     <div id="profile_header">
         <?php if (!empty($profile_picture)) : ?>
             <div class="profile_picture">
-                <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
+                <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(300, 300))->toUrl(); ?>" alt="profile picture">
             </div>
         <?php else : ?>
             <div class="profile_picture">
@@ -128,9 +128,9 @@ $profile_picture = $user['image'];
             </div>
         <?php endif; ?>
         <div>
-            <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></h1>
+            <h1 id="profile_name"><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></h1>
             <?php if ($followed == true) : ?>
-            <form action="" method="post">
+                <form action="" method="post">
                     <button type="submit" name="follow" class="follow__button">Unfollow</button>
                 </form>
             <?php else : ?>

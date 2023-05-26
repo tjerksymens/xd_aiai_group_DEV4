@@ -445,6 +445,10 @@ input[type="text"], input[type="password"], select {
     padding-left: 0;
 }
 
+#profile_name{
+    text-align: center;
+}
+
 @media (max-width: 500px) {
     .profile_picture img{
         margin-top: auto;
