@@ -76,8 +76,7 @@ if (!empty($_POST)) {
     <?php include_once("nav.inc.php"); ?>
     <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></h1>
 
-    <form action="" method="post" enctype="multipart/form-data">
-        <?php if (!empty($profile_picture)) : ?>
+    <?php if (!empty($profile_picture)) : ?>
             <div class="profile_picture">
                 <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
             </div>
@@ -86,6 +85,8 @@ if (!empty($_POST)) {
                 <img src="uploads/profile_picture_placeholder.jpg" alt="profile picture" width="300px">
             </div>
         <?php endif; ?>
+
+        <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
 
         <?php if (isset($error)) : ?>
             <div class="form__error">
@@ -102,14 +103,12 @@ if (!empty($_POST)) {
         <div class="form__field">
             <input type="submit" value="Upload a profile picture" class="btn btn--primary" name="set_image">
         </div>
-    </form>
 
-    <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
     <form action="" method="post">
-        <button type="submit" name="reset_password">Reset Password</button>
+        <button type="submit" name="reset_password" class="btn btn--primary">Reset Password</button>
     </form>
     <form action="" method="post">
-        <button type="submit" name="delete_account">Delete Account</button>
+        <button type="submit" name="delete_account" class="btn btn--primary">Delete Account</button>
     </form>
 
     <div class="credits">

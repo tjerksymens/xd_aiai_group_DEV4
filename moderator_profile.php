@@ -117,10 +117,10 @@ if (!empty($_POST)) {
 
     <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
     <form action="" method="post">
-        <button type="submit" name="reset_password">Reset Password</button>
+        <button type="submit" name="reset_password" class="btn btn--primary">Reset Password</button>
     </form>
     <form action="" method="post">
-        <button type="submit" name="delete_account">Delete Account</button>
+        <button type="submit" name="delete_account" class="btn btn--primary">Delete Account</button>
     </form>
 
     <div class="credits">

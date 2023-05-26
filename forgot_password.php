@@ -59,11 +59,12 @@ if (!empty($_POST)) {
 				<div class="form__field">
 					<input type="submit" value="Reset password" class="btn btn--primary">
 				</div>
+
+				<div>
+					<a href="login.php" class="btn btn--primary">Or log in here</a>
+				</div>
 			</form>
 		</div>
-	</div>
-	<div>
-		<a href="login.php">Or log in here</a>
 	</div>
 </body>
 
