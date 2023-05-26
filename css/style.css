@@ -118,6 +118,11 @@ form {
 .form__error {
     color: var(--red);
     text-align: center;
+    background-color: var(--white);
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
 }
 
 input[type="text"], input[type="password"], select {
