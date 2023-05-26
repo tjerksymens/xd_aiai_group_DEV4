@@ -77,7 +77,7 @@ if (!empty($_POST)) {
     <div id="profile_header">
         <?php if (!empty($profile_picture)) : ?>
             <div class="profile_picture">
-                <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
+                <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(300, 300))->toUrl(); ?>" alt="profile picture">
             </div>
         <?php else : ?>
             <div class="profile_picture">
@@ -94,12 +94,12 @@ if (!empty($_POST)) {
         </div>
         <div id="profile_settings">
             <form action="" method="post" enctype="multipart/form-data">
-                <div class="form__field">
-                    <label for="image">Upload image: </label>
+                <div class="form__field" id="img_upload">
+                    <label for="image">Upload a new profile picture: </label>
                     <input type="file" name="image">
                 </div>
                 <div class="form__field">
-                    <input type="submit" value="Upload a profile picture" class="btn btn--primary" name="set_image">
+                    <input type="submit" value="Upload" class="btn btn--primary" name="set_image">
                 </div>
             </form>
 
@@ -107,18 +107,18 @@ if (!empty($_POST)) {
                 <button type="submit" name="reset_password" class="btn btn--primary">Reset Password</button>
             </form>
             <form action="" method="post">
-                <button type="submit" name="delete_account" class="btn btn--primary">Delete Account</button>
+                <button id="delete_account" type="submit" name="delete_account" class="btn btn--primary">Delete Account</button>
             </form>
         </div>
     </div>
-        
-        <?php if (isset($error)) : ?>
-            <div class="form__error">
-                <p>
-                    <?php echo $error; ?>
-                </p>
-            </div>
-        <?php endif; ?>
+
+    <?php if (isset($error)) : ?>
+        <div class="form__error">
+            <p>
+                <?php echo $error; ?>
+            </p>
+        </div>
+    <?php endif; ?>
 
     <!-- Toont zoeken op details -->
     <form action="" method="get">

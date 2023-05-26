@@ -112,7 +112,7 @@ class Prompt
     public static function countAll()
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT COUNT(*) FROM prompts");
+        $statement = $conn->prepare("SELECT COUNT(*) FROM prompts WHERE approved = 1");
         $statement->execute();
         return $statement->fetchColumn();
     }

@@ -1,5 +1,5 @@
 :root {
-    --nav-background: #C0EEF2;
+    --nav-background: #181823;
     --black: #181823;
     --blue: #537FE7;
     --white: #E9F8F9;
@@ -75,11 +75,11 @@ label {
 }
 
 #nav #logout_button:hover {
-    color: var(--blue);
+    color: var(--white);
 }
 
 #nav a {
-    color: var(--black);
+    color: var(--blue);
     display: flex;
     align-items: center;
     font-family: var(--font-title);
@@ -91,7 +91,7 @@ label {
 }
 
 #nav a:hover {
-    color: var(--blue);
+    color: var(--white);
 }
 
     /*Logo (is included in Nav)*/
@@ -100,12 +100,12 @@ label {
         font-style: normal;
         font-weight: 700;
         font-size: 1.7rem;
-        color: var(--blue);
+        color: var(--white);
         padding-top: 16px;
     }
 
     .logo:hover {
-        color: var(--white);
+        color: var(--blue);
     }
 
 /*Form Styling*/
@@ -348,20 +348,9 @@ input[type="text"], input[type="password"], select {
     margin-bottom: 0.8rem;
 }
 
-/*profile image scaling*/
-#profile_header {
-    display: flex;
-    flex-direction: row;
-    height: 300px;
-    margin-bottom: 16px;
-}
-
-.profile_picture {
-    height: 300px;
+.profile_picture img{
     width: 300px;
-    background-position: center;
-    background-size: cover;
-    background-color: var(--nav-background);
+    height: auto;
     border-radius: 10px;
     margin-right: 10px;
 }
@@ -374,6 +363,15 @@ input[type="text"], input[type="password"], select {
     align-items: center;
     padding: 16px;
     margin-left: 20px;
+}
+
+#img_upload{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    margin-left: -48px;
 }
 
 /*Follow button (other user profile)*/
@@ -416,6 +414,16 @@ input[type="text"], input[type="password"], select {
     cursor: pointer;
 }
 
+#delete_account {
+    background-color: var(--red);
+}
+
+#delete_account:hover {
+    background-color: var(--white);
+    color: var(--red);
+    cursor: pointer;
+}
+
 /*Forgot password page*/
 .reset_password {
     background-color: var(--blue);
@@ -426,6 +434,23 @@ input[type="text"], input[type="password"], select {
     margin: 0 auto;
 }
 
+#profile_header li{
+    list-style-type: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+@media (max-width: 500px) {
+    .profile_picture img{
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 94%;
+        height: auto;
+        border-radius: 10px;
+        margin-right: 16px;
+        margin-left: 16px;
+    }
+}
 @media (max-width: 820px) {
     /*Algemeen*/
     .container{
@@ -451,6 +476,19 @@ input[type="text"], input[type="password"], select {
         margin-bottom: 16px;
     }
 
+    #profile_header {
+        text-align: center;
+    }
+
+    .profile_picture img{
+        margin-top: 10px;
+        margin-bottom: auto;
+        width: 440px;
+        height: auto;
+        border-radius: 10px;
+        margin-right: 16px;
+        margin-left: 16px;
+    }
 }
 
 @media (min-width: 820px) and (max-width: 1200px) {
@@ -461,6 +499,26 @@ input[type="text"], input[type="password"], select {
 
     .form__signup {
         width: 40%;
+    }
+    #profile_header {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        height: 300px;
+        margin-bottom: 16px;
+    }
+
+    .btn--primary  {
+        padding: 0.5rem 0rem;
+        width: 200px;
+    }
+
+    .profile_picture img{
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 200px;
+        height: auto;
+        border-radius: 10px;
+        margin-right: 10px;
     }
     .prompts {
         margin-top: 40px;
@@ -488,6 +546,13 @@ input[type="text"], input[type="password"], select {
     #nav a {
         margin-left: 0px;
         margin-right: 0px;
+    }
+
+    #profile_header {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        height: 300px;
+        margin-bottom: 16px;
     }
 
     /*Prompts*/
