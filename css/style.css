@@ -348,6 +348,34 @@ input[type="text"], input[type="password"], select {
     margin-bottom: 0.8rem;
 }
 
+/*profile image scaling*/
+#profile_header {
+    display: flex;
+    flex-direction: row;
+    height: 300px;
+    margin-bottom: 16px;
+}
+
+.profile_picture {
+    height: 300px;
+    width: 300px;
+    background-position: center;
+    background-size: cover;
+    background-color: var(--nav-background);
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+/*profile settings*/
+#profile_settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    margin-left: 20px;
+}
+
 /*Follow button (other user profile)*/
 .follow__button {
     background-color: var(--blue);
@@ -362,6 +390,30 @@ input[type="text"], input[type="password"], select {
     margin-bottom: 1rem;
     cursor: pointer;
     min-width: 200px;
+}
+
+/*moderator profile*/
+#mod_tier_list {
+    font-family: var(--font-family);
+    font-style: normal;
+}
+
+/*Buy button on prompts tab*/
+#buy_btn {
+    background-color: var(--green);
+    color: var(--nav-background);
+    border: none;
+    font-family: var(--font-family);
+    font-style: normal;
+    font-weight: 700;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#buy_btn:hover {
+    background-color: var(--nav-background);
+    color: var(--green);
+    cursor: pointer;
 }
 
 /*Forgot password page*/

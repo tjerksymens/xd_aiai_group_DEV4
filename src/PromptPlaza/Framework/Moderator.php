@@ -31,7 +31,7 @@ class Moderator extends \PromptPlaza\Framework\User
         $statement->bindValue(":id", $id);
         $statement->execute();
         $user = $statement->fetch(\PDO::FETCH_ASSOC);
-        $this->canEdit = $user['canEdit'];
+        $this->canDelete = $user['canDelete'];
 
         if ($this->canDelete == '1') {
             return true;
@@ -43,11 +43,11 @@ class Moderator extends \PromptPlaza\Framework\User
     public function checkApprove($id)
     {
         $conn = Db::getConnection();
-        $statement = $conn->prepare("SELECT canDelete FROM users WHERE id = :id");
+        $statement = $conn->prepare("SELECT canApprove FROM users WHERE id = :id");
         $statement->bindValue(":id", $id);
         $statement->execute();
         $user = $statement->fetch(\PDO::FETCH_ASSOC);
-        $this->canEdit = $user['canEdit'];
+        $this->canApprove = $user['canApprove'];
 
         if ($this->canApprove == '1') {
             return true;

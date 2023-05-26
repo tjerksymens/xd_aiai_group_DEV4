@@ -239,7 +239,7 @@ if (isset($_GET['details'])) {
                         <?php endif; ?>
                         <?php if (!$showBuyButton = \PromptPlaza\Framework\Bought::checkIfBought($_SESSION['user_id'], $prompt['id'])) : ?>
                             <form action="" method="post">
-                                <button type="submit" name="buy_prompt" value="<?php echo htmlspecialchars($prompt['id']) ?>">Buy</button>
+                                <button type="submit" name="buy_prompt" id="buy_btn" value="<?php echo htmlspecialchars($prompt['id']) ?>">Buy</button>
                             </form>
                         <?php else : ?>
                             <p>Owned</p>

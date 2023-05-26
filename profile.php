@@ -74,9 +74,8 @@ if (!empty($_POST)) {
 
 <body>
     <?php include_once("nav.inc.php"); ?>
-    <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></h1>
-
-    <?php if (!empty($profile_picture)) : ?>
+    <div id="profile_header">
+        <?php if (!empty($profile_picture)) : ?>
             <div class="profile_picture">
                 <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
             </div>
@@ -85,9 +84,34 @@ if (!empty($_POST)) {
                 <img src="uploads/profile_picture_placeholder.jpg" alt="profile picture" width="300px">
             </div>
         <?php endif; ?>
+        <div>
+            <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></h1>
+            <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+            <div class="credits">
+                <h2>Your credits</h2>
+                <p><?php echo htmlspecialchars($credits['credits']); ?> credits</p>
+            </div>
+        </div>
+        <div id="profile_settings">
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="form__field">
+                    <label for="image">Upload image: </label>
+                    <input type="file" name="image">
+                </div>
+                <div class="form__field">
+                    <input type="submit" value="Upload a profile picture" class="btn btn--primary" name="set_image">
+                </div>
+            </form>
 
-        <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-
+            <form action="" method="post">
+                <button type="submit" name="reset_password" class="btn btn--primary">Reset Password</button>
+            </form>
+            <form action="" method="post">
+                <button type="submit" name="delete_account" class="btn btn--primary">Delete Account</button>
+            </form>
+        </div>
+    </div>
+        
         <?php if (isset($error)) : ?>
             <div class="form__error">
                 <p>
@@ -96,35 +120,15 @@ if (!empty($_POST)) {
             </div>
         <?php endif; ?>
 
-        <div class="form__field">
-            <label for="image">Upload image</label>
-            <input type="file" name="image">
-        </div>
-        <div class="form__field">
-            <input type="submit" value="Upload a profile picture" class="btn btn--primary" name="set_image">
-        </div>
-
-    <form action="" method="post">
-        <button type="submit" name="reset_password" class="btn btn--primary">Reset Password</button>
-    </form>
-    <form action="" method="post">
-        <button type="submit" name="delete_account" class="btn btn--primary">Delete Account</button>
-    </form>
-
-    <div class="credits">
-        <h2>Your credits</h2>
-        <p><?php echo htmlspecialchars($credits['credits']); ?> credits</p>
-    </div>
-
-    <h2>Your prompts</h2>
-
     <!-- Toont zoeken op details -->
     <form action="" method="get">
-        <label for="details">Browse unapproved prompts by details</label>
+        <label for="details">Browse your prompts by details</label>
         <input type="text" name="details">
         <input type="submit" value="Browse" class="btn btn--primary">
     </form>
 
+
+    <h2>Your prompts</h2>
     <!-- Toont prompts -->
     <div class="prompts">
         <?php foreach ($prompts as $prompt) : ?>

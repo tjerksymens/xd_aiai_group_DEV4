@@ -117,17 +117,30 @@ $profile_picture = $user['image'];
 
 <body>
     <?php include_once("nav.inc.php"); ?>
-    <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></h1>
+    <div id="profile_header">
+        <?php if (!empty($profile_picture)) : ?>
+            <div class="profile_picture">
+                <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
+            </div>
+        <?php else : ?>
+            <div class="profile_picture">
+                <img src="uploads/profile_picture_placeholder.jpg" alt="profile picture" width="300px">
+            </div>
+        <?php endif; ?>
+        <div>
+            <h1><?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></h1>
+            <?php if ($followed == true) : ?>
+            <form action="" method="post">
+                    <button type="submit" name="follow" class="follow__button">Unfollow</button>
+                </form>
+            <?php else : ?>
+                <form action="" method="post">
+                    <button type="submit" name="follow" class="follow__button">Follow</button>
+                </form>
+            <?php endif; ?>
+        </div>
+    </div>
 
-    <?php if (!empty($profile_picture)) : ?>
-        <div class="profile_picture">
-            <img src="<?php echo $cloudinary->image($profile_picture)->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="profile picture">
-        </div>
-    <?php else : ?>
-        <div class="profile_picture">
-            <img src="uploads/profile_picture_placeholder.jpg" alt="profile picture" width="300px">
-        </div>
-    <?php endif; ?>
 
     <?php if (isset($error)) : ?>
         <div class="form__error">
@@ -135,16 +148,6 @@ $profile_picture = $user['image'];
                 <?php echo $error; ?>
             </p>
         </div>
-    <?php endif; ?>
-
-    <?php if ($followed == true) : ?>
-        <form action="" method="post">
-            <button type="submit" name="follow" class="follow__button">Unfollow</button>
-        </form>
-    <?php else : ?>
-        <form action="" method="post">
-            <button type="submit" name="follow" class="follow__button">Follow</button>
-        </form>
     <?php endif; ?>
 
     <!-- Toont zoeken op details -->
@@ -161,41 +164,40 @@ $profile_picture = $user['image'];
         <?php foreach ($prompts as $prompt) : ?>
             <?php if ($prompt['username'] == $user['username']) : ?>
                 <div class="prompt">
-                    <strong><a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
-                    <p><?php echo "prompt: " . htmlspecialchars($prompt['prompt']); ?></p>
+                    <strong id="Prompt__Creator__Head">Made by: <a href="other_user_profile.php?username=<?php echo htmlspecialchars($prompt['username']); ?>"><?php echo htmlspecialchars($prompt['username']); ?></a></strong>
+                    <h2><?php echo "prompt: " . htmlspecialchars($prompt['prompt']); ?></h2>
                     <img src="<?php echo $cloudinary->image($prompt['image'])->resize(Resize::fill(100, 150))->toUrl(); ?>" alt="prompt image">
-                    <?php if ($prompt['price'] == 1) : ?>
-                        <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credit"; ?></p>
-                    <?php else : ?>
-                        <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credits"; ?></p>
-                    <?php endif; ?>
-                    <?php if (!$showBuyButton = \PromptPlaza\Framework\Bought::checkIfBought($_SESSION['user_id'], $prompt['id'])) : ?>
-                        <form action="" method="post">
-                            <button type="submit" name="buy_prompt" value="<?php echo htmlspecialchars($prompt['id']) ?>">Buy</button>
-                        </form>
-                    <?php else : ?>
-                        <p>Owned</p>
-                    <?php endif; ?>
-                    <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
-
-                    <!-- Toont likes-->
-                    <div>
-                        <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like">Like</a>
-                        <span class='likes' id="likes<?php echo htmlspecialchars($prompt['id']) ?>"><?php echo $prompts = \PromptPlaza\Framework\Prompt::getLikes($prompt['id']); ?></span>
-                        <span class="status"></span>
-                        people like this
+                    <div id="Prompt__Details">
+                        <?php if ($prompt['price'] == 1) : ?>
+                            <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credit"; ?></p>
+                        <?php else : ?>
+                            <p><?php echo "price: " . htmlspecialchars($prompt['price'])  . " credits"; ?></p>
+                        <?php endif; ?>
+                        <p><?php echo "details: " . htmlspecialchars($prompt['details']); ?></p>
                     </div>
 
-                    <!-- Toont add to favourite -->
-                    <div>
-                        <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite_add" id="favourite_add<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
-                    </div>
+                    <div id="Prompt__LikeFavourite">
+                        <!-- Toont likes-->
+                        <div>
+                            <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="like" id="like<?php echo htmlspecialchars($prompt['id']) ?>">Like</a>
+                            <span class='likes' id="likes<?php echo htmlspecialchars($prompt['id']) ?>"><?php echo $prompts = \PromptPlaza\Framework\Prompt::getLikes($prompt['id']); ?></span>
+                            <?php if ($prompts !== 1) : ?>
+                                <span class="status">people like this</span>
+                            <?php else : ?>
+                                <span class="status">person likes this</span>
+                            <?php endif; ?>
+                        </div>
 
+                        <!-- Toont add to favourite -->
+                        <div>
+                            <a href="#" data-id="<?php echo htmlspecialchars($prompt['id']) ?>" class="favourite" id="favourite<?php echo htmlspecialchars($prompt['id']) ?>">Add to favourites</a>
+                        </div>
+                    </div>
 
                     <!-- Toont comments -->
                     <div class="post_comments">
                         <div class="post_comments_form">
-                            <input type="text" placeholder="Place here your comment" class="comment__field__prompt" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
+                            <input type="text" placeholder="Place your comment here" class="comment__field__prompt" id="comment<?php echo htmlspecialchars($prompt['id']) ?>">
                             <a href="#" class="btn_comments" data-id="<?php echo htmlspecialchars($prompt['id']) ?>">Add comment</a>
                         </div>
 
@@ -209,7 +211,6 @@ $profile_picture = $user['image'];
                             <?php endforeach; ?>
                         </ul>
                     </div>
-
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>
